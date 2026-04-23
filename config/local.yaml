@@ -1,0 +1,14 @@
+# Local developer override.
+# Reduces data volume so the pipeline runs in minutes on a laptop.
+# ENV variable is unset (default) — config.py falls back to this file.
+
+date_range:
+  start: "2010-01"
+  end:   "2015-12"
+
+domain:
+  lat_min: 32
+  lat_max: 42
+  lon_min: -125
+  lon_max: -115
+  grid_resolution: 0.25

@@ -1,0 +1,9 @@
+# Nautilus (Kubernetes) override.
+# Full domain, full date range, paths point to PVC mount.
+# Activated by setting ENV=nautilus in the k8s job spec.
+
+paths:
+  raw_data:    "/workspace/data/raw/"
+  processed:   "/workspace/data/processed/"
+  results:     "/workspace/results/"
+  figures:     "/workspace/figures/"

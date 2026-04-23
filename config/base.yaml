@@ -1,0 +1,56 @@
+# Shared defaults — all environments inherit these values.
+# Override specific keys in local.yaml or nautilus.yaml.
+
+domain:
+  lat_min: 24
+  lat_max: 50
+  lon_min: -125
+  lon_max: -100
+  grid_resolution: 0.25
+
+nino34_region:              # canonical ENSO SST index region
+  lat_min: -5
+  lat_max: 5
+  lon_min: -170
+  lon_max: -120
+
+variables:
+  single_level:
+    - total_precipitation
+    - sea_surface_temperature
+    - volumetric_soil_water_layer_1
+    - 2m_temperature
+  pressure_level:
+    - geopotential          # at 500 hPa
+    - u_component_of_wind   # at 850 hPa
+    - v_component_of_wind   # at 850 hPa
+  pressure_levels: [500, 850]
+
+date_range:
+  start: "1979-01"
+  end:   "2023-12"
+
+extreme_precip_percentile: 90   # threshold for binary extreme event variable
+
+regions:                    # sub-regions for spatial averaging before PCMCI+
+  pacific_northwest:
+    lat_min: 45
+    lat_max: 50
+    lon_min: -125
+    lon_max: -115
+  california:
+    lat_min: 32
+    lat_max: 40
+    lon_min: -125
+    lon_max: -115
+  intermountain_west:
+    lat_min: 37
+    lat_max: 45
+    lon_min: -115
+    lon_max: -105
+
+paths:
+  raw_data:    "data/raw/"
+  processed:   "data/processed/"
+  results:     "results/"
+  figures:     "figures/"

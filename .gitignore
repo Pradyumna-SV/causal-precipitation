@@ -1,0 +1,41 @@
+# ── Kubernetes (local only) ────────────────────────────────
+k8s/
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.eggs/
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Environments ──────────────────────────────────────────────────────────────
+.env
+.venv
+venv/
+env/
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+
+# ── Data (managed on PVC, never committed) ────────────────────────────────────
+data/**
+!data/
+!data/raw/
+!data/processed/
+!data/**/.gitkeep
+!data/.gitignore
+
+# ── Results and figures (keep directory structure only) ───────────────────────
+results/**
+!results/
+!results/.gitkeep
+
+figures/**
+!figures/
+!figures/.gitkeep

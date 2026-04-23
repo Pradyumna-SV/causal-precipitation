@@ -1,0 +1,34 @@
+name: causal-precip
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  # Core scientific stack
+  - numpy>=1.26
+  - pandas>=2.1
+  - scipy>=1.11
+  - xarray>=2023.12
+  - netCDF4>=1.6
+  - zarr>=2.16
+  - h5py>=3.10
+  # Climate data access
+  - pip
+  # Visualisation
+  - matplotlib>=3.8
+  - cartopy>=0.22
+  - seaborn>=0.13
+  # Notebook
+  - jupyter>=1.0
+  - ipykernel>=6.0
+  # Testing
+  - pytest>=7.4
+  # Config
+  - pyyaml>=6.0
+  - pip:
+      - cdsapi>=0.6
+      - tigramite>=5.2
+      - lingam>=1.8
+      - dowhy>=0.11
+      - econml>=0.15
+      - statsmodels>=0.14
