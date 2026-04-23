@@ -6,15 +6,7 @@ This project applies causal discovery and causal inference methods to ERA5 clima
 
 ---
 
-## Team
 
-| Member | Owned Script | Primary Environment |
-|--------|-------------|---------------------|
-| Pradyumna | `01_download_era5.py` | Nautilus HPC |
-| Suditi | `02_preprocess.py` | Local (macOS/Linux) |
-| Anirudh | `03_causal_discovery.py` | Local (macOS/Linux) |
-| Nate | `04_causal_inference.py` | Local (macOS/Linux) |
-| Tiffany | `05_figures.py` | Local (macOS/Linux) |
 
 ---
 
