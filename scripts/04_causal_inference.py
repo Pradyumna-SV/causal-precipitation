@@ -2,7 +2,6 @@
 scripts/04_causal_inference.py
 Estimate ACE via IPW and regression adjustment.
 
-Owner: Nate
 Run:   python scripts/04_causal_inference.py           (local)
        ENV=nautilus python scripts/04_causal_inference.py  (Nautilus, via k8s job)
 """

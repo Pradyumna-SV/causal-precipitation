@@ -2,7 +2,6 @@
 scripts/02_preprocess.py
 Compute anomalies, spatial averages, stationarity checks.
 
-Owner: Suditi
 Run:   python scripts/02_preprocess.py           (local)
        ENV=nautilus python scripts/02_preprocess.py  (Nautilus, via k8s job)
 """

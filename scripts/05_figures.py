@@ -2,7 +2,7 @@
 scripts/05_figures.py
 Generate all paper figures from results.
 
-Owner: Tiffany
+
 Run:   python scripts/05_figures.py           (local)
        ENV=nautilus python scripts/05_figures.py  (Nautilus, via k8s job)
 """

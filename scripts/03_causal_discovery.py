@@ -2,7 +2,6 @@
 scripts/03_causal_discovery.py
 Run PCMCI+ and VARLiNGAM, save recovered DAG.
 
-Owner: Anirudh
 Run:   python scripts/03_causal_discovery.py           (local)
        ENV=nautilus python scripts/03_causal_discovery.py  (Nautilus, via k8s job)
 """

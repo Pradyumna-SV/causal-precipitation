@@ -2,7 +2,6 @@
 scripts/01_download_era5.py
 Download ERA5 variables from CDS API and save as NetCDF.
 
-Owner: Pradyumna
 Run:   python scripts/01_download_era5.py           (local)
        ENV=nautilus python scripts/01_download_era5.py  (Nautilus, via k8s job)
 """
