@@ -30,20 +30,27 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parent.parent.parent
 
 
+def _resolve_path(cfg_path: str, filename: str) -> Path:
+    """Join cfg_path and filename; use cfg_path as-is if it is absolute."""
+    p = Path(cfg_path)
+    base = p if p.is_absolute() else _repo_root() / p
+    return (base / filename).resolve()
+
+
 def raw_path(filename: str, cfg: dict) -> Path:
-    return (_repo_root() / cfg["paths"]["raw_data"] / filename).resolve()
+    return _resolve_path(cfg["paths"]["raw_data"], filename)
 
 
 def processed_path(filename: str, cfg: dict) -> Path:
-    return (_repo_root() / cfg["paths"]["processed"] / filename).resolve()
+    return _resolve_path(cfg["paths"]["processed"], filename)
 
 
 def results_path(filename: str, cfg: dict) -> Path:
-    return (_repo_root() / cfg["paths"]["results"] / filename).resolve()
+    return _resolve_path(cfg["paths"]["results"], filename)
 
 
 def figures_path(filename: str, cfg: dict) -> Path:
-    return (_repo_root() / cfg["paths"]["figures"] / filename).resolve()
+    return _resolve_path(cfg["paths"]["figures"], filename)
 
 
 def _raw_stem(cfg: dict) -> str:
