@@ -113,6 +113,11 @@ def _normalise_coords(ds: xr.Dataset) -> xr.Dataset:
     elif "valid_time" in ds.coords and "time" not in ds.coords:
         ds = ds.rename({"valid_time": "time"})
 
+    # Drop CDS housekeeping coordinates that cause merge conflicts
+    drop_coords = [c for c in ("number", "expver", "step") if c in ds.coords]
+    if drop_coords:
+        ds = ds.drop_vars(drop_coords)
+
     if "latitude" in ds.dims and ds.latitude.values[0] > ds.latitude.values[-1]:
         ds = ds.isel(latitude=slice(None, None, -1))
     if "longitude" in ds.dims and len(ds.longitude) > 1:
