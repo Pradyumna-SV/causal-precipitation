@@ -80,21 +80,27 @@ def _normalise_coords(ds: xr.Dataset) -> xr.Dataset:
 def open_raw_single(cfg: dict) -> xr.Dataset:
     """Open the single-level ERA5 file (tp, sst, swvl1, t2m)."""
     path = raw_path(f"era5_single_{_raw_stem(cfg)}.nc", cfg)
-    ds = xr.open_dataset(path, chunks={"time": 60})
+    if not path.exists():
+        raise FileNotFoundError(f"Single-level ERA5 file not found: {path}")
+    ds = xr.open_dataset(path, engine="netcdf4")
     return _normalise_coords(ds)
 
 
 def open_raw_plev(cfg: dict) -> xr.Dataset:
     """Open the pressure-level ERA5 file (z, u, v at 500 / 850 hPa)."""
     path = raw_path(f"era5_plev_{_raw_stem(cfg)}.nc", cfg)
-    ds = xr.open_dataset(path, chunks={"time": 60})
+    if not path.exists():
+        raise FileNotFoundError(f"Pressure-level ERA5 file not found: {path}")
+    ds = xr.open_dataset(path, engine="netcdf4")
     return _normalise_coords(ds)
 
 
 def open_raw_nino34(cfg: dict) -> xr.Dataset:
     """Open the Niño 3.4 region SST file (5°S–5°N, 170°W–120°W)."""
     path = raw_path(f"era5_nino34_{_raw_stem(cfg)}.nc", cfg)
-    ds = xr.open_dataset(path, chunks={"time": 60})
+    if not path.exists():
+        raise FileNotFoundError(f"Niño 3.4 ERA5 file not found: {path}")
+    ds = xr.open_dataset(path, engine="netcdf4")
     return _normalise_coords(ds)
 
 

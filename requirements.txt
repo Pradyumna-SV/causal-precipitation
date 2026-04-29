@@ -4,6 +4,7 @@ pandas>=2.1
 scipy>=1.11
 xarray>=2023.12
 netCDF4>=1.6
+dask>=2023.12
 zarr>=2.16
 h5py>=3.10
 
