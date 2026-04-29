@@ -73,21 +73,31 @@ def _raw_stem(cfg: dict) -> str:
 
 def _unzip_if_needed(path: Path) -> Path:
     """
-    If `path` is actually a zip archive (CDS API sometimes wraps NetCDF in zip),
-    extract the first .nc file inside it next to the original and return that path.
-    The zip file is left in place so reruns are idempotent.
+    If `path` is a zip archive (new CDS API wraps each variable in a separate .nc),
+    extract all .nc files and merge them into a single combined NetCDF next to the zip.
+    Returns the path to the combined file. Idempotent.
     """
     import zipfile
     if not zipfile.is_zipfile(path):
         return path
+
+    combined_path = path.with_suffix(".combined.nc")
+    if combined_path.exists():
+        return combined_path
+
     with zipfile.ZipFile(path) as zf:
         nc_names = [n for n in zf.namelist() if n.endswith(".nc")]
         if not nc_names:
             raise ValueError(f"Zip archive {path} contains no .nc files: {zf.namelist()}")
-        target = path.parent / nc_names[0]
-        if not target.exists():
-            zf.extract(nc_names[0], path.parent)
-    return target
+        datasets = []
+        for name in nc_names:
+            zf.extract(name, path.parent)
+            ds = xr.open_dataset(path.parent / name, engine="netcdf4")
+            datasets.append(ds)
+
+    merged = xr.merge(datasets)
+    merged.to_netcdf(combined_path)
+    return combined_path
 
 
 def _normalise_coords(ds: xr.Dataset) -> xr.Dataset:

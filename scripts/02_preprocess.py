@@ -110,6 +110,7 @@ def load_anomaly_fields(cfg: dict) -> dict[str, xr.DataArray]:
         da = ds_pl[cds_name]
         if plev_coord is not None:
             da = da.sel({plev_coord: level}, method="nearest")
+            da = da.drop_vars([plev_coord], errors="ignore")
         da = select_bbox(da, d["lat_min"], d["lat_max"], d["lon_min"], d["lon_max"])
         da.name = short
         anom = compute_anomalies(da, base_period=WMO_BASE)
