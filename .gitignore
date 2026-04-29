@@ -40,4 +40,4 @@ figures/**
 !figures/
 !figures/.gitkeep
 
-.pdf
+*.pdf
