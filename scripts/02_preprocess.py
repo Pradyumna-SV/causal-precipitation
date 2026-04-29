@@ -35,7 +35,7 @@ from causal_precip import (
     processed_path,
     select_bbox,
 )
-from causal_precip.data import CDS_SHORT
+from causal_precip.data import CDS_SHORT, _find_var
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -78,9 +78,10 @@ def load_anomaly_fields(cfg: dict) -> dict[str, xr.DataArray]:
     log.info("Loading single-level file …")
     ds_sl = open_raw_single(cfg)
     for short, long_name in SINGLE_VARS.items():
-        cds_name = CDS_SHORT[long_name]
-        if cds_name not in ds_sl:
-            log.warning("Variable %s (%s) not found in single-level file, skipping.", cds_name, long_name)
+        cds_name = _find_var(ds_sl, long_name)
+        if cds_name is None:
+            log.warning("Variable %s not found in single-level file (tried: %s). Available: %s",
+                        long_name, list(ds_sl.data_vars), list(ds_sl.data_vars))
             continue
         da = ds_sl[cds_name]
         da = select_bbox(da, d["lat_min"], d["lat_max"], d["lon_min"], d["lon_max"])
@@ -101,9 +102,10 @@ def load_anomaly_fields(cfg: dict) -> dict[str, xr.DataArray]:
             break
 
     for short, (level, long_name) in PLEV_VARS.items():
-        cds_name = CDS_SHORT[long_name]
-        if cds_name not in ds_pl:
-            log.warning("Variable %s not found in pressure-level file, skipping.", cds_name)
+        cds_name = _find_var(ds_pl, long_name)
+        if cds_name is None:
+            log.warning("Variable %s not found in pressure-level file (tried: %s). Available: %s",
+                        long_name, list(ds_pl.data_vars), list(ds_pl.data_vars))
             continue
         da = ds_pl[cds_name]
         if plev_coord is not None:

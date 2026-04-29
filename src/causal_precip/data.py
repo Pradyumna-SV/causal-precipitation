@@ -14,16 +14,27 @@ import xarray as xr
 # WMO standard 30-year base period (avoids circularity from using the full record)
 WMO_BASE: Tuple[str, str] = ("1979-01", "2010-12")
 
-# CDS long-name → NetCDF short variable name written by the CDS API
-CDS_SHORT: dict[str, str] = {
-    "total_precipitation": "tp",
-    "sea_surface_temperature": "sst",
-    "volumetric_soil_water_layer_1": "swvl1",
-    "2m_temperature": "t2m",
-    "geopotential": "z",
-    "u_component_of_wind": "u",
-    "v_component_of_wind": "v",
+# CDS long-name → possible NetCDF variable names (new CDS API may use different names)
+# Listed in order of preference; first match wins.
+CDS_CANDIDATES: dict[str, list[str]] = {
+    "total_precipitation":          ["tp", "total_precipitation"],
+    "sea_surface_temperature":      ["sst", "sea_surface_temperature"],
+    "volumetric_soil_water_layer_1":["swvl1", "volumetric_soil_water_layer_1", "swvl"],
+    "2m_temperature":               ["t2m", "2m_temperature"],
+    "geopotential":                 ["z", "geopotential"],
+    "u_component_of_wind":          ["u", "u_component_of_wind"],
+    "v_component_of_wind":          ["v", "v_component_of_wind"],
 }
+# Keep CDS_SHORT as the primary (first) short name for backwards compatibility
+CDS_SHORT: dict[str, str] = {k: v[0] for k, v in CDS_CANDIDATES.items()}
+
+
+def _find_var(ds: xr.Dataset, long_name: str) -> Optional[str]:
+    """Return the first matching variable name in ds for the given long_name."""
+    for candidate in CDS_CANDIDATES.get(long_name, [long_name]):
+        if candidate in ds:
+            return candidate
+    return None
 
 
 def _repo_root() -> Path:
@@ -81,10 +92,17 @@ def _unzip_if_needed(path: Path) -> Path:
 
 def _normalise_coords(ds: xr.Dataset) -> xr.Dataset:
     """
-    Normalise ERA5 coordinate order:
-      - latitude  ascending  (some CDS downloads are descending)
-      - longitude ascending  (should already be, but enforce)
+    Normalise ERA5 coordinate conventions from the new CDS API (2024+):
+      - rename valid_time → time  (CDS API v2 breaking change)
+      - latitude  ascending
+      - longitude ascending
     """
+    # New CDS API uses 'valid_time' instead of 'time'
+    if "valid_time" in ds.dims and "time" not in ds.dims:
+        ds = ds.rename({"valid_time": "time"})
+    elif "valid_time" in ds.coords and "time" not in ds.coords:
+        ds = ds.rename({"valid_time": "time"})
+
     if "latitude" in ds.dims and ds.latitude.values[0] > ds.latitude.values[-1]:
         ds = ds.isel(latitude=slice(None, None, -1))
     if "longitude" in ds.dims and len(ds.longitude) > 1:
