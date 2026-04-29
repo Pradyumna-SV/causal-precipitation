@@ -60,6 +60,25 @@ def _raw_stem(cfg: dict) -> str:
     return f"{start}_{end}"
 
 
+def _unzip_if_needed(path: Path) -> Path:
+    """
+    If `path` is actually a zip archive (CDS API sometimes wraps NetCDF in zip),
+    extract the first .nc file inside it next to the original and return that path.
+    The zip file is left in place so reruns are idempotent.
+    """
+    import zipfile
+    if not zipfile.is_zipfile(path):
+        return path
+    with zipfile.ZipFile(path) as zf:
+        nc_names = [n for n in zf.namelist() if n.endswith(".nc")]
+        if not nc_names:
+            raise ValueError(f"Zip archive {path} contains no .nc files: {zf.namelist()}")
+        target = path.parent / nc_names[0]
+        if not target.exists():
+            zf.extract(nc_names[0], path.parent)
+    return target
+
+
 def _normalise_coords(ds: xr.Dataset) -> xr.Dataset:
     """
     Normalise ERA5 coordinate order:
@@ -82,6 +101,7 @@ def open_raw_single(cfg: dict) -> xr.Dataset:
     path = raw_path(f"era5_single_{_raw_stem(cfg)}.nc", cfg)
     if not path.exists():
         raise FileNotFoundError(f"Single-level ERA5 file not found: {path}")
+    path = _unzip_if_needed(path)
     ds = xr.open_dataset(path, engine="netcdf4")
     return _normalise_coords(ds)
 
@@ -91,6 +111,7 @@ def open_raw_plev(cfg: dict) -> xr.Dataset:
     path = raw_path(f"era5_plev_{_raw_stem(cfg)}.nc", cfg)
     if not path.exists():
         raise FileNotFoundError(f"Pressure-level ERA5 file not found: {path}")
+    path = _unzip_if_needed(path)
     ds = xr.open_dataset(path, engine="netcdf4")
     return _normalise_coords(ds)
 
@@ -100,6 +121,7 @@ def open_raw_nino34(cfg: dict) -> xr.Dataset:
     path = raw_path(f"era5_nino34_{_raw_stem(cfg)}.nc", cfg)
     if not path.exists():
         raise FileNotFoundError(f"Niño 3.4 ERA5 file not found: {path}")
+    path = _unzip_if_needed(path)
     ds = xr.open_dataset(path, engine="netcdf4")
     return _normalise_coords(ds)
 
