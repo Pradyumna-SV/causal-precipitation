@@ -1,0 +1,32 @@
+# Links enumerability + multiplicity to manuscript_brief / robustness_bundle.
+# See docs/analysis_plan.md for gate definitions A–D.
+
+version: 1
+
+primary:
+  preset_id: primary
+  # Region used for gate B in robustness_bundle (IPW/DR CI excludes zero).
+  gate_b_region: pacific_northwest
+
+multiplicity:
+  strategy: >-
+    Closed list of YAML presets under config/presets/; exploratory rows must
+    be labeled in manuscript_brief. Prefer temporal holdout (documented in
+    analysis_plan) or BH-FDR across the exploratory_presets list below.
+  bh_fdr_target_q: 0.10
+
+# Ordered exploratory candidates (do not expand ad hoc without updating this list).
+exploratory_presets:
+  - id: full_year
+    yaml: full_year
+    requires_pipeline: [preprocess, discovery, inference]
+  - id: season_ndjf
+    yaml: season_ndjf
+    requires_pipeline: [discovery, inference]
+  - id: overlap_trim
+    yaml: overlap_trim
+    requires_pipeline: [inference]
+  - id: pooled_western
+    yaml: pooled_western
+    requires_pipeline: [pooled_ace]
+    notes: "Uses scripts/pooled_ace.py → results/pooled_ace.json"

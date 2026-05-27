@@ -1,0 +1,139 @@
+\documentclass{article}
+
+\usepackage[preprint]{neurips_2025}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\title{An auditable causal workflow for Pacific Northwest winter precipitation extremes in ERA5}
+
+\author{Pradyumna}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Extreme precipitation in the western United States is shaped by coupled ocean-atmosphere variability, but observational teleconnection analyses do not by themselves define causal estimands. We present an auditable causal workflow for ERA5 monthly reanalysis panels over three western-US regions from 1979--2023. The workflow separates discovery from identification, documents a projection from time-series discovery output to a lag-0 acyclic panel graph, and validates a frozen estimand with IPW, doubly robust estimation, falsification checks, temporal holdout, and targeted sensitivity analyses. The primary estimand is the risk-difference effect of warm regional sea-surface temperature anomalies on 90th-percentile precipitation extremes during ONDJFM in the Pacific Northwest. In the full sample, IPW estimates 0.146 (95\% CI 0.026, 0.237), and DR estimates 0.160 (95\% CI 0.040, 0.245). In a temporal holdout with nuisance models fit on 1979--1999 and evaluated on 2000--2023, IPW estimates 0.180 (95\% CI 0.016, 0.361), and DR estimates 0.066 (95\% CI 0.045, 0.085). The effect is not western-US-wide and remains sensitive to broad observed-covariate adjustment. The contribution is a transparent climate-ML workflow for making narrow causal claims inspectable, including where they fail.
+\end{abstract}
+
+\section{Introduction}
+
+Extreme precipitation is central to flood risk, infrastructure planning, and climate adaptation in the western United States. Sea-surface temperature (SST), ENSO variability, and mid-tropospheric circulation are known to covary with North American hydroclimate \citep{ropelewski1986north,dettiger2011climate}, but a causal claim requires more than an association or discovered graph. It requires a stated treatment, outcome, population, adjustment strategy, and validation procedure.
+
+This paper asks a narrow question: under an explicit identification graph, does warm regional SST increase cool-season extreme-precipitation risk in the Pacific Northwest? We answer this with a reproducible ERA5 pipeline \citep{hersbach2020era5} that separates exploratory causal discovery from the graph used for backdoor adjustment. The headline result is positive for the Pacific Northwest and replicates in a post-2000 temporal holdout. Equally important, the same workflow finds weak or null evidence for California, the Intermountain West, pooled western-US stacking, and a shorter NDJF-only season. We therefore frame the paper as an identification-audited applied causal climate case study.
+
+Our contributions are: (i) an auditable ERA5-to-causal-inference workflow that separates discovery, graph projection, identification, estimation, and validation; (ii) a frozen Pacific Northwest ONDJFM estimand with IPW, DR, temporal holdout, logistic-baseline comparison, backbone sensitivity, and lag sensitivity; and (iii) explicit reporting of null contexts and assumption-sensitive variants rather than broadening the claim after seeing results.
+
+\section{Data and estimand}
+
+We use ERA5 monthly reanalysis over 1979--2023 \citep{hersbach2020era5}. Regional monthly panels are built for the Pacific Northwest, California, and the Intermountain West. The Pacific Northwest box is 45--50 N and 125--115 W. Precipitation, SST, soil moisture, near-surface temperature, 500 hPa geopotential, 850 hPa winds, and Nino 3.4 are aggregated to region-level monthly series. Thus ``regional SST'' means the monthly SST anomaly averaged over the same regional box, not a named coastal SST index. The outcome is a binary indicator for a region's 90th-percentile precipitation anomaly, denoted \texttt{tp\_extreme}. The primary season is ONDJFM: October through March.
+
+The primary estimand is the average causal effect, as a risk difference, of \texttt{sst\_warm} on \texttt{tp\_extreme} in Pacific Northwest ONDJFM months. Here \texttt{sst\_warm} is one when regional SST anomaly is at least 0.5 K. Table~\ref{tab:estimand} summarizes the frozen design.
+
+\begin{table}[t]
+\centering
+\caption{Frozen primary design and validation status.}
+\label{tab:estimand}
+\begin{tabular}{ll}
+\toprule
+Item & Value \\
+\midrule
+Region and season & Pacific Northwest, ONDJFM \\
+Treatment & \texttt{sst\_warm}: regional SST anomaly $\geq 0.5$ K \\
+Outcome & \texttt{tp\_extreme}: regional 90th-percentile precipitation extreme \\
+Full-sample rows & 270 ONDJFM months \\
+Adjustment set & \texttt{z500} \\
+Uncertainty & 2,000 block-bootstrap replicates, 12-month blocks \\
+Holdout split & train 1979--1999, evaluate 2000--2023 \\
+Robustness status & overlap, placebo, and IPW/DR agreement pass; NDJF-only fails \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Identification-first workflow}
+
+We use PCMCI+ \citep{runge2019detecting,runge2020discovering} and VARLiNGAM \citep{shimizu2006linear,hyvarinen2010estimation} as discovery tools, not as proof of the true climate graph. Consensus discovery records are projected into a panel graph by dropping self-edges, retaining only lag-0 links, and greedily adding edges in significance order while preserving acyclicity. This projected graph is then merged with a small domain backbone: Nino 3.4 to 500 hPa geopotential and SST, 500 hPa geopotential to precipitation, SST to precipitation, and precipitation to the extreme indicator.
+
+Backdoor adjustment sets are identified on this merged graph using Pearl's graphical criteria \citep{pearl2009causality}. The primary Pacific Northwest adjustment set is \texttt{z500}: in the merged graph it blocks the open backdoor path through large-scale circulation, while adding variables such as Nino 3.4, near-surface temperature, or soil moisture can adjust potential ancestors, mediators, descendants, or precision variables depending on the assumed graph. We therefore treat \texttt{z500} as primary and larger observed sets as sensitivity checks, not as automatically superior models. We estimate risk differences using inverse-probability weighting \citep{rosenbaum1983central} and a doubly robust estimator \citep{robins1994estimation,econml}. Confidence intervals use a block bootstrap for dependent monthly time series \citep{kunsch1989jackknife}. We report E-values \citep{vanderweele2017sensitivity} as a sensitivity summary but do not treat them as proof of no unmeasured confounding.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\linewidth]{figures/fig1_domain_map.pdf}
+\caption{Western-US analysis domain and the three regional panels. The primary gate-B claim is Pacific Northwest ONDJFM.}
+\label{fig:domain}
+\end{figure}
+
+\section{Results}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig7_primary_holdout_summary.pdf}
+\caption{Risk-difference estimates for warm SST effects on extreme precipitation. The Pacific Northwest full-sample effect is positive under IPW and DR, and the temporal holdout strictly replicates. California, the Intermountain West, and the pooled western-US stack are weak or null.}
+\label{fig:main-results}
+\end{figure}
+
+Figure~\ref{fig:main-results} shows the central result. In the full Pacific Northwest sample, IPW estimates a risk difference of 0.146 (95\% CI 0.026, 0.237), and DR estimates 0.160 (95\% CI 0.040, 0.245). Overlap diagnostics are acceptable: effective sample size divided by $n$ is 0.701, fitted propensity scores range from 0.116 to 0.408, and the 99th-percentile weight is 6.217.
+
+The temporal holdout is the strongest anti-overfitting check. Nuisance models are fit on 126 ONDJFM rows from 1979--1999 and evaluated on 144 ONDJFM rows from 2000--2023. Held-out IPW estimates 0.180 (95\% CI 0.016, 0.361), and held-out DR estimates 0.066 (95\% CI 0.045, 0.085). Both estimates are positive and both intervals exclude zero. The DR interval is much tighter: the IPW interval is 8.7 times wider. This is expected from the implementation because the holdout bootstrap varies evaluation rows while keeping train-fitted nuisance models fixed; DR is stabilized by its outcome-effect model, whereas IPW remains more sensitive to inverse-propensity weighting. We therefore report the tight DR interval as model-dependent stabilization, not as a free robustness guarantee.
+
+The effect is not western-US-wide. California has IPW 0.001 (95\% CI -0.109, 0.152) and DR -0.020 (95\% CI -0.119, 0.146). The Intermountain West has IPW 0.014 (95\% CI -0.081, 0.135) and DR 0.023 (95\% CI -0.075, 0.147). A pooled western-US stack is also null: IPW -0.007 (95\% CI -0.062, 0.054) and DR -0.015 (95\% CI -0.093, 0.062).
+
+Naive baselines clarify what the causal machinery adds. A crude logistic model with \texttt{sst\_warm} alone estimates a risk difference of 0.094 (95\% CI -0.008, 0.205). The graph-adjusted logistic model with \texttt{sst\_warm} and \texttt{z500} estimates 0.147 (95\% CI 0.051, 0.237), close to IPW. This means the headline signal is visible in a simple adjusted model, while the causal workflow makes the assumptions, graph projection, overlap, falsification, and holdout checks explicit. A broad observed-covariate logistic model estimates -0.007 (95\% CI -0.105, 0.100), matching the sensitivity finding that adding \texttt{nino34}, \texttt{t2m}, and \texttt{swvl1} creates a different and less stable estimand.
+
+\section{Robustness, limitations, and reproducibility}
+
+The robustness bundle passes three checks: overlap/effective-sample-size diagnostics, a month-shuffle placebo whose IPW interval includes zero, and agreement between IPW and DR signs and intervals. Backbone sensitivity preserves the positive estimate under graph perturbations that add \texttt{nino34 -> tp}, add \texttt{z500 -> sst}, or remove \texttt{nino34 -> sst}. However, conservative broad observed adjustment with \{\texttt{z500}, \texttt{nino34}, \texttt{t2m}, \texttt{swvl1}\} is null and has poor overlap (ESS/n = 0.198), so the result should be presented as graph-dependent. Lag sensitivity is more reassuring: adding \texttt{sst\_lag1}, lagged circulation/ENSO, or \texttt{tp\_lag1} preserves the positive sign, though \texttt{sst\_lag1} is imprecise because overlap degrades.
+
+The NDJF-only seasonal variant fails sign stability, so the result should be read as ONDJFM-specific. ONDJFM is the frozen primary season for this release and is climatologically motivated as a broad Pacific Northwest cool-season window, but the repository does not prove fully prospective seasonal pre-registration. Temporal holdout reduces overfitting concern for the frozen claim but does not erase all seasonal-selection risk.
+
+The main limitation is identification. The causal interpretation depends on the domain backbone, the lag-0 projection of discovery output, and the sufficiency of the adjustment set. ERA5 is a reanalysis product rather than direct observation, and monthly aggregation smooths storm-scale mechanisms. Atmospheric rivers are likely submonthly mechanisms behind many Pacific Northwest precipitation extremes \citep{dettiger2011climate}; this monthly panel estimates a regional risk difference and does not identify storm-scale atmospheric-river causality. The linear \texttt{do(ENSO=0)} counterfactual outputs are diagnostic only and are not the headline estimand. External validation in MERRA-2 or JRA-55 would strengthen the claim, but this release does not claim cross-product replication.
+
+All outputs are reproducible with \texttt{make pipeline}. The current verification report has status \texttt{PASS} with zero errors, and temporal holdout validation reports \texttt{strict\_statistical\_replication: true}. Numeric claims in this paper are copied from the current \texttt{results/} artifacts, not from the append-only experiment log.
+
+\section*{Broader impact}
+
+This work is most relevant to Pacific Northwest water managers, flood-risk planners, reservoir operators, and emergency-preparedness offices who need seasonal risk-screening evidence rather than black-box association maps. The estimate is not an operational forecast or an attribution tool for individual storms. Its practical use is to flag warm regional SST conditions as a scenario stress-test and monitoring input for ONDJFM extreme-precipitation risk under clearly stated assumptions.
+
+\section*{Acknowledgments}
+
+No external acknowledgments.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+
+\section{Additional figures}
+
+Discovery graphs, VARLiNGAM heatmaps, exploratory ACE comparisons, and counterfactual CDFs are staged as appendix figures. They are included for auditability and should not be read as independent proof of the primary causal claim.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/fig3_pcmci_graphs.pdf}
+\caption{PCMCI+ discovery outputs used as exploratory input to the projected panel graph.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/fig4_varlingam_heatmaps.pdf}
+\caption{VARLiNGAM coefficient summaries used as complementary discovery context.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/fig5_ace_comparison.pdf}
+\caption{Legacy regional ACE and exploratory Nino contrast figure.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/fig6_counterfactual_cdfs.pdf}
+\caption{Linear SCM counterfactual CDF diagnostic.}
+\end{figure}
+
+\end{document}

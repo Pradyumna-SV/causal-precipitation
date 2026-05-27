@@ -1,0 +1,6 @@
+paths:
+  results: "results/experiments/estimand_tp_continuous/"
+inference:
+  ace_spec:
+    profile: warm_sst_tp_continuous
+  report_alternative_estimands: false

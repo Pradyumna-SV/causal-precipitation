@@ -1,0 +1,6 @@
+paths:
+  results: "results/grid/season_ndjf/"
+discovery:
+  season_months: [11, 12, 1, 2]
+inference:
+  season_months: [11, 12, 1, 2]

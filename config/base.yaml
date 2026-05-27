@@ -1,5 +1,4 @@
-# Shared defaults — all environments inherit these values.
-# Override specific keys in local.yaml or nautilus.yaml.
+# Shared defaults. Override specific keys in local.yaml for quick test subsets.
 
 domain:
   lat_min: 24
@@ -54,3 +53,47 @@ paths:
   processed:   "data/processed/"
   results:     "results/"
   figures:     "figures/"
+
+# Domain edges for causal **identification** (Pearl backdoor / SCM), merged with
+# the data-derived lag-0 structural DAG in script 04. Earlier edges take
+# precedence when cycle-breaking drops a candidate link.
+identification_backbone:
+  edges:
+    - [nino34, z500]
+    - [nino34, sst]
+    - [z500, tp]
+    - [sst, tp]
+    - [tp, tp_extreme]
+
+inference:
+  # Cool-season months (ONDJFM); set to null for full calendar year.
+  season_months: [10, 11, 12, 1, 2, 3]
+  n_boot: 2000
+  # Lighter bootstrap for scripts/robustness_bundle.py (placebos / falsifications).
+  robustness_n_boot: 500
+  block_size: 12
+  # Optional (preset): trim rows whose fitted propensity falls outside these quantiles.
+  # null keeps all rows (default).
+  ipw_ps_trim_quantiles: null
+  # Binariation threshold on Niño 3.4 (K) for theory-aligned secondary estimand.
+  nino34_warm_threshold: 0.5
+  # Extra IPW estimand: warm Niño vs not (see alternative_estimands in ace JSON).
+  report_alternative_estimands: true
+  # Optional ACE estimand profile for script 04 (default when omitted).
+  # warm_sst_tp_extreme | warm_sst_tp_continuous | nino_tp_extreme | continuous_sst_tp_extreme
+  ace_spec:
+    profile: warm_sst_tp_extreme
+
+discovery:
+  # Match inference mask so PCMCI/VARLiNGAM see the same population (null = all months).
+  season_months: [10, 11, 12, 1, 2, 3]
+
+validation:
+  temporal_holdout:
+    # Frozen confirmation for the primary gate-B claim (see analysis_registry.yaml).
+    train_start: "1979-01"
+    train_end: "1999-12"
+    eval_start: "2000-01"
+    eval_end: "2023-12"
+    region: pacific_northwest
+    n_boot: 2000

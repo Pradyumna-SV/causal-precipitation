@@ -1,0 +1,6 @@
+paths:
+  results: "results/experiments/estimand_nino_tp_extreme/"
+inference:
+  ace_spec:
+    profile: nino_tp_extreme
+  report_alternative_estimands: false

@@ -21,15 +21,14 @@ def test_load_config_returns_dict():
         assert key in cfg, f"Missing key: {key}"
 
 
-def test_local_override_reduces_date_range():
-    """With ENV unset or 'local', date_range.start should be >= 2010 (local override)."""
+def test_local_defaults_inherit_base_date_range():
+    """With ENV unset or 'local', empty local.yaml should keep base ERA5 window."""
     env_backup = os.environ.pop("ENV", None)
     try:
         cfg = load_config()
-        start_year = int(cfg["date_range"]["start"].split("-")[0])
-        assert start_year >= 2010, (
-            f"Expected local config to restrict start year to >= 2010, got {start_year}"
-        )
+        assert cfg["_env"] == "local"
+        assert cfg["date_range"]["start"] == "1979-01"
+        assert cfg["date_range"]["end"] == "2023-12"
     finally:
         if env_backup is not None:
             os.environ["ENV"] = env_backup

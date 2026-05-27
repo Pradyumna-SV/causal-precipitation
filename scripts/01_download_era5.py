@@ -9,22 +9,41 @@ Three separate downloads:
 
 Idempotent: skips files that already exist unless --force is passed.
 
-Run:   python scripts/01_download_era5.py           (local, reduced date range)
-       ENV=nautilus python scripts/01_download_era5.py  (Nautilus k8s, full range)
-       python scripts/01_download_era5.py --force       (re-download everything)
+Run:   python scripts/01_download_era5.py
+       python scripts/01_download_era5.py --force   # re-download even if files exist
 """
 
 import argparse
 import logging
+import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+_PROJECT_CDsapirc = _REPO_ROOT / ".cdsapirc"
+
+sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 from causal_precip import load_config, raw_path
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
+
+
+def _ensure_cdsapi_rc() -> Path:
+    """
+    Point cdsapi at credentials: respect existing CDSAPI_RC / env URL+key;
+    otherwise use repo-root .cdsapirc if present, else ~/.cdsapirc (default).
+    """
+    if os.environ.get("CDSAPI_RC"):
+        return Path(os.environ["CDSAPI_RC"]).expanduser()
+    if os.environ.get("CDSAPI_URL") and os.environ.get("CDSAPI_KEY"):
+        return Path(os.environ.get("CDSAPI_RC", os.path.expanduser("~/.cdsapirc")))
+    if _PROJECT_CDsapirc.is_file():
+        os.environ["CDSAPI_RC"] = str(_PROJECT_CDsapirc.resolve())
+        log.info("Using CDS credentials from %s", _PROJECT_CDsapirc)
+        return _PROJECT_CDsapirc
+    return Path(os.path.expanduser("~/.cdsapirc"))
 
 
 def _year_month_lists(cfg: dict) -> tuple[list[str], list[str]]:
@@ -161,16 +180,20 @@ def main(cfg: dict, force: bool = False) -> None:
         log.error("cdsapi not installed. Run: pip install cdsapi")
         sys.exit(1)
 
-    # cdsapi reads credentials from ~/.cdsapirc or $CDSAPI_URL / $CDSAPI_KEY env vars
+    creds_path = _ensure_cdsapi_rc()
     try:
         client = cdsapi.Client()
     except Exception as exc:
         log.error(
             "CDS API client initialisation failed: %s\n"
-            "Ensure ~/.cdsapirc exists with:\n"
+            "Put a CDS config at %s (repo root) with:\n"
             "  url: https://cds.climate.copernicus.eu/api\n"
-            "  key: <your-api-key>",
+            "  key: <uid>:<api-key>\n"
+            "Or set CDSAPI_RC to that file, or CDSAPI_URL + CDSAPI_KEY.\n"
+            "Tried config path: %s",
             exc,
+            _PROJECT_CDsapirc,
+            creds_path,
         )
         sys.exit(1)
 

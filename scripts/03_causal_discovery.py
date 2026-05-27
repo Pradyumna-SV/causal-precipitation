@@ -6,14 +6,20 @@ Reconcile the two recovered graphs into a consensus DAG.
 Outputs (in cfg['paths']['results']):
   pcmci_{region}.pkl          — full tigramite PCMCI+ results dict
   pcmci_{region}_summary.json — adjacency, p-values, val_matrix (lag 1 only)
-  varlingam_{region}.pkl      — fitted VARLiNGAM model
+  varlingam_{region}.pkl      — dict with fitted VARLiNGAM model (standardized columns)
   varlingam_{region}_summary.json
   consensus_dag_{region}.json — edges present in both methods (high-confidence)
 
-Run:   python scripts/03_causal_discovery.py           (local, ParCorr CI test)
-       ENV=nautilus python scripts/03_causal_discovery.py  (Nautilus, GPDC CI test)
+Run:   python scripts/03_causal_discovery.py
+
+Discovery optionally uses ``discovery.season_months`` (see config) so graphs match
+the inference estimand.
+       python scripts/03_causal_discovery.py --gpdc   # slower GPDC independence test
+
+Uses ParCorr by default (fast). Pass ``--gpdc`` for a nonlinear conditional independence test.
 """
 
+import argparse
 import json
 import logging
 import pickle
@@ -27,6 +33,7 @@ import xarray as xr
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from causal_precip import load_config, processed_path, results_path
+from causal_precip.inference import filter_panel_dataframe_by_month
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -62,7 +69,7 @@ def run_pcmciplus(
 ) -> dict:
     """
     Run PCMCI+ on the panel DataFrame.
-    Uses ParCorr (fast, linear) locally; GPDC (nonlinear kernel) on Nautilus.
+    Uses ParCorr (fast) by default; set ``nonlinear=True`` for GPDC (slow, GPU optional).
     Returns the tigramite results dict.
     """
     from tigramite import data_processing as pp
@@ -123,15 +130,17 @@ def summarise_pcmci(results: dict, alpha: float = PC_ALPHA) -> dict:
 # ---------------------------------------------------------------------------
 
 def run_varlingam(df: pd.DataFrame, lags: int = TAU_MAX) -> object:
-    """Fit a VARLiNGAM model and return the fitted model object."""
+    """Fit a VARLiNGAM model on **column-standardized** data; return fit bundle."""
     import lingam
+    from sklearn.preprocessing import StandardScaler
 
-    data_array = df.values.astype(float)
-    model      = lingam.VARLiNGAM(lags=lags, criterion="bic", prune=True)
-    model.fit(data_array)
-    log.info("VARLiNGAM fitted. Causal order: %s",
+    scaler = StandardScaler()
+    Z = scaler.fit_transform(df.values.astype(float))
+    model = lingam.VARLiNGAM(lags=lags, criterion="bic", prune=True)
+    model.fit(Z)
+    log.info("VARLiNGAM fitted (standardized columns). Causal order: %s",
              [df.columns[i] for i in model.causal_order_])
-    return model
+    return {"model": model, "standardized_columns": True, "var_names": list(df.columns)}
 
 
 def summarise_varlingam(model: object, var_names: list[str], alpha: float = PC_ALPHA) -> dict:
@@ -208,23 +217,30 @@ def reconcile_dags(pcmci_summary: dict, varlingam_summary: dict) -> dict:
 # Main
 # ---------------------------------------------------------------------------
 
-def main(cfg: dict) -> None:
-    use_nonlinear = cfg.get("_env", "local") == "nautilus"
+def main(cfg: dict, use_gpdc: bool = False) -> None:
     regions       = list(cfg["regions"].keys())
-    out_dir       = results_path("", cfg).parent
+    out_dir       = results_path("", cfg)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     for region in regions:
         log.info("=" * 60)
         log.info("Causal discovery — region: %s", region)
 
-        df = load_panel(region, cfg)
+        df0 = load_panel(region, cfg)
+        disc_m = (cfg.get("discovery") or {}).get("season_months")
+        df = filter_panel_dataframe_by_month(df0, disc_m)
+        if disc_m and len(df) < len(df0):
+            log.info(
+                "Discovery uses seasonal subset: %d rows (from %d full panel)",
+                len(df),
+                len(df0),
+            )
         var_names = list(df.columns)
 
         # --- PCMCI+ ---
         log.info("Running PCMCI+ (tau_max=%d, alpha=%.2f) …", TAU_MAX, PC_ALPHA)
         pcmci_results = run_pcmciplus(df, tau_max=TAU_MAX, pc_alpha=PC_ALPHA,
-                                      nonlinear=use_nonlinear)
+                                      nonlinear=use_gpdc)
         pcmci_summary = summarise_pcmci(pcmci_results)
 
         pkl_path = results_path(f"pcmci_{region}.pkl", cfg)
@@ -237,12 +253,14 @@ def main(cfg: dict) -> None:
 
         # --- VARLiNGAM ---
         log.info("Running VARLiNGAM (lags=%d) …", TAU_MAX)
-        vl_model   = run_varlingam(df, lags=TAU_MAX)
+        vl_bundle = run_varlingam(df, lags=TAU_MAX)
+        vl_model = vl_bundle["model"]
         vl_summary = summarise_varlingam(vl_model, var_names)
+        vl_summary["standardized_columns"] = True
 
         pkl_path = results_path(f"varlingam_{region}.pkl", cfg)
         with open(pkl_path, "wb") as f:
-            pickle.dump(vl_model, f)
+            pickle.dump(vl_bundle, f)
         json_path = results_path(f"varlingam_{region}_summary.json", cfg)
         with open(json_path, "w") as f:
             json.dump(vl_summary, f, indent=2)
@@ -259,7 +277,15 @@ def main(cfg: dict) -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Causal discovery (PCMCI+ + VARLiNGAM).")
+    parser.add_argument(
+        "--gpdc",
+        action="store_true",
+        help="Use tigramite GPDC independence test (slower than ParCorr)",
+    )
+    args = parser.parse_args()
+
     cfg = load_config()
     log.info("Environment : %s", cfg.get("_env", "local"))
     log.info("Date range  : %s → %s", cfg["date_range"]["start"], cfg["date_range"]["end"])
-    main(cfg)
+    main(cfg, use_gpdc=args.gpdc)

@@ -1,0 +1,3 @@
+paths:
+  results: "results/experiments/extreme_pct_95/"
+extreme_precip_percentile: 95

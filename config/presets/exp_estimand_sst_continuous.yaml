@@ -1,0 +1,6 @@
+paths:
+  results: "results/experiments/estimand_sst_continuous/"
+inference:
+  ace_spec:
+    profile: continuous_sst_tp_extreme
+  report_alternative_estimands: false

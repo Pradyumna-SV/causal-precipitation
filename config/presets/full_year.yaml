@@ -1,0 +1,6 @@
+paths:
+  results: "results/grid/full_year/"
+discovery:
+  season_months: null
+inference:
+  season_months: null

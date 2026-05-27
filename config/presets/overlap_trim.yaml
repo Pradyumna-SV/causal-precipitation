@@ -1,0 +1,5 @@
+# IPW propensity trimming (quantiles of fitted PS); inference-only variant.
+paths:
+  results: "results/grid/overlap_trim/"
+inference:
+  ipw_ps_trim_quantiles: [0.05, 0.95]

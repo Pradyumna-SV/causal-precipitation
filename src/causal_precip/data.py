@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Optional, Tuple
 
 import numpy as np
+import pandas as pd
 import xarray as xr
 
 # WMO standard 30-year base period (avoids circularity from using the full record)
@@ -125,6 +126,19 @@ def _normalise_coords(ds: xr.Dataset) -> xr.Dataset:
     return ds
 
 
+def _collapse_duplicate_monthly_times(ds: xr.Dataset) -> xr.Dataset:
+    """
+    CDS multi-file bundles sometimes include two timesteps per calendar month (e.g. 00Z vs 06Z).
+    Average to one sample per month so single-level data align with plev / Niño 3.4 files.
+    """
+    if "time" not in ds.dims:
+        return ds
+    t = pd.DatetimeIndex(ds["time"].values)
+    if pd.Series(t).dt.to_period("M").value_counts().max() <= 1:
+        return ds
+    return ds.resample(time="1MS").mean()
+
+
 # ---------------------------------------------------------------------------
 # Raw file openers
 # ---------------------------------------------------------------------------
@@ -136,7 +150,8 @@ def open_raw_single(cfg: dict) -> xr.Dataset:
         raise FileNotFoundError(f"Single-level ERA5 file not found: {path}")
     path = _unzip_if_needed(path)
     ds = xr.open_dataset(path, engine="netcdf4")
-    return _normalise_coords(ds)
+    ds = _normalise_coords(ds)
+    return _collapse_duplicate_monthly_times(ds)
 
 
 def open_raw_plev(cfg: dict) -> xr.Dataset:
@@ -193,6 +208,9 @@ def compute_anomalies(
         clim = compute_climatology(da, base_period)
     anom = da.groupby("time.month") - clim
     anom.attrs = {**da.attrs, "long_name": da.attrs.get("long_name", "") + " anomaly"}
+    # groupby leaves a `month` coord; drop it so merging multi-var panels does not fail
+    if "month" in anom.coords:
+        anom = anom.drop_vars("month")
     return anom
 
 
@@ -212,7 +230,12 @@ def nino34_index(
 
     nr  = cfg["nino34_region"]
     ds  = open_raw_nino34(cfg)
-    sst = ds[CDS_SHORT["sea_surface_temperature"]]
+    sst_name = _find_var(ds, "sea_surface_temperature")
+    if sst_name is None:
+        raise KeyError(
+            f"No SST-like variable in {ds.data_vars}; needed for Niño 3.4 index"
+        )
+    sst = ds[sst_name]
 
     sst_box  = select_bbox(sst, nr["lat_min"], nr["lat_max"], nr["lon_min"], nr["lon_max"])
     sst_mean = area_weighted_mean(sst_box)
@@ -243,7 +266,7 @@ def extreme_precip_flag(
     flag.attrs = {
         "long_name": f"Extreme precipitation indicator (>= {percentile}th pct)",
         "percentile": percentile,
-        "threshold_mm_day": threshold,
+        "threshold_m": threshold,
         "units": "1",
     }
     return flag

@@ -1,0 +1,3 @@
+# Pre-specified release layout — default results/ (merged after base + local).
+paths:
+  results: "results/"

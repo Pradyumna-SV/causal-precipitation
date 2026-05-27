@@ -1,0 +1,9 @@
+# Adds one coarse box (overlaps the three standard regions) — 4 panels / DAGs per run.
+paths:
+  results: "results/experiments/megaregion/"
+regions:
+  us_west_coarse:
+    lat_min: 32
+    lat_max: 50
+    lon_min: -125
+    lon_max: -100

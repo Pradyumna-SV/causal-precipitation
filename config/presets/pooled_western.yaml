@@ -1,0 +1,3 @@
+# Marker preset for pooled stacking (output from scripts/pooled_ace.py uses default results/).
+paths:
+  results: "results/"

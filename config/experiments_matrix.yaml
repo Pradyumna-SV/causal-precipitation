@@ -1,0 +1,61 @@
+# Master list of experiments for scripts/run_experiment_matrix.py
+# Append-only log: results/experiment_log.jsonl
+# Latest rolled summary: results/experiments_index.json
+#
+# Prerequisite: run ``make pipeline`` (primary results/) so consensus_dag_*.json
+# exists for inference-only steps that copy from results/.
+
+version: 1
+log_path: results/experiment_log.jsonl
+summary_path: results/experiments_index.json
+
+experiments:
+  - id: grid_full_year
+    description: "Calendar-year discovery/inference (paths.results=grid/full_year)"
+    causal_preset: full_year
+    steps: [preprocess, discovery, inference]
+
+  - id: grid_season_ndjf
+    description: "NDJF-only months vs ONDJFM baseline"
+    causal_preset: season_ndjf
+    steps: [preprocess, discovery, inference]
+
+  - id: grid_overlap_trim
+    description: "ONDJFM + IPW propensity trimming; reuses primary consensus (inference only)"
+    causal_preset: overlap_trim
+    steps: [inference]
+
+  - id: pooled_western_stack
+    description: "Stacked 3 regions, cluster bootstrap on time (results/pooled_ace.json)"
+    causal_preset: primary
+    steps: [pooled_ace]
+
+  - id: extreme_pct_85
+    description: "Binary extreme at 85th percentile threshold (recompute panels)"
+    causal_preset: exp_extreme_pct_85
+    steps: [preprocess, discovery, inference]
+
+  - id: extreme_pct_95
+    description: "Binary extreme at 95th percentile threshold"
+    causal_preset: exp_extreme_pct_95
+    steps: [preprocess, discovery, inference]
+
+  - id: estimand_tp_continuous
+    description: "Binary warm SST vs not → continuous tp anomaly"
+    causal_preset: exp_estimand_tp_continuous
+    steps: [inference]
+
+  - id: estimand_nino_tp_extreme
+    description: "Binary warm Niño34 vs not → tp_extreme"
+    causal_preset: exp_estimand_nino
+    steps: [inference]
+
+  - id: estimand_sst_continuous_gps
+    description: "Continuous regional SST (GPS/IPW) → tp_extreme; DR omitted"
+    causal_preset: exp_estimand_sst_continuous
+    steps: [inference]
+
+  - id: megaregion_us_west_coarse
+    description: "Adds us_west_coarse box (4 regions); overlapping spatial support"
+    causal_preset: exp_megaregion
+    steps: [preprocess, discovery, inference]

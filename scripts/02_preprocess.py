@@ -7,8 +7,7 @@ Outputs (all in cfg['paths']['processed']):
   panel_{region}.nc       — time × variable Dataset (anomalies + nino34 + tp_extreme)
   stationarity_tests.json — ADF p-values for every time series
 
-Run:   python scripts/02_preprocess.py           (local)
-       ENV=nautilus python scripts/02_preprocess.py  (Nautilus k8s)
+Run:   python scripts/02_preprocess.py
 """
 
 import json

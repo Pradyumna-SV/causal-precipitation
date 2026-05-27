@@ -9,9 +9,9 @@ Figure inventory:
   fig4_varlingam_heatmaps.pdf — VARLiNGAM coefficient matrices
   fig5_ace_comparison.pdf     — IPW vs. DR ACE bar chart with 95% CIs
   fig6_counterfactual_cdfs.pdf — Factual vs. do(ENSO=0) CDFs
+  fig7_primary_holdout_summary.pdf — Primary/regional/holdout risk-difference forest plot
 
-Run:   python scripts/05_figures.py           (local or Nautilus)
-       ENV=nautilus python scripts/05_figures.py
+Run:   python scripts/05_figures.py
 """
 
 import json
@@ -80,11 +80,14 @@ def fig2_enso_precip_ts(cfg: dict) -> None:
     precip_ts: dict = {}
     for region in REGIONS:
         ds = xr.open_dataset(processed_path(f"panel_{region}.nc", cfg))
-        if "tp" in ds:
-            precip_ts[region] = ds["tp"]
+        try:
+            if "tp" in ds:
+                precip_ts[region] = ds["tp"]
+        finally:
+            ds.close()
 
     fig, ax = plt.subplots(figsize=(COL2, 2.4))
-    plot_enso_precip_timeseries(nino34, precip_ts, ax=ax)
+    plot_enso_precip_timeseries(nino34, precip_ts, ax=ax, cfg=cfg)
     fig.tight_layout()
     save_fig(fig, "fig2_enso_precip_ts.pdf", cfg)
 
@@ -114,7 +117,7 @@ def fig3_pcmci_graphs(cfg: dict) -> None:
             title=region.replace("_", " ").title(),
         )
 
-    fig.suptitle("PCMCI+ causal graphs (α = 0.05)", y=1.02)
+    fig.suptitle("PCMCI+ (ParCorr): exploratory time-series graph", y=1.02)
     fig.tight_layout()
     save_fig(fig, "fig3_pcmci_graphs.pdf", cfg)
 
@@ -135,7 +138,11 @@ def fig4_varlingam_heatmaps(cfg: dict) -> None:
             ax.axis("off")
             continue
         with open(pkl_path, "rb") as f:
-            model = pickle.load(f)
+            blob = pickle.load(f)
+        if isinstance(blob, dict) and "model" in blob:
+            model = blob["model"]
+        else:
+            model = blob
 
         json_path = results_path(f"varlingam_{region}_summary.json", cfg)
         with open(json_path) as f:
@@ -149,7 +156,7 @@ def fig4_varlingam_heatmaps(cfg: dict) -> None:
             title=region.replace("_", " ").title(),
         )
 
-    fig.suptitle("VARLiNGAM causal coefficient matrices", y=1.02)
+    fig.suptitle("VARLiNGAM coefficient matrices (predictors scaled to 1σ)", y=1.02)
     fig.tight_layout()
     save_fig(fig, "fig4_varlingam_heatmaps.pdf", cfg)
 
@@ -178,8 +185,13 @@ def fig5_ace_comparison(cfg: dict) -> None:
         log.warning("No ACE results found; skipping fig5.")
         return
 
-    fig, ax = plt.subplots(figsize=(COL2, 2.6))
-    plot_ace_comparison(ace_results, ax=ax)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(COL2, 4.9), sharex=True)
+    plot_ace_comparison(ace_results, ax=ax1, ax_nino=ax2)
+    fig.suptitle(
+        "Risk differences for P(extreme precip): primary estimand (SST) and exploratory Niño IPW",
+        fontsize=10,
+        y=1.02,
+    )
     fig.tight_layout()
     save_fig(fig, "fig5_ace_comparison.pdf", cfg)
 
@@ -205,13 +217,175 @@ def fig6_counterfactual_cdfs(cfg: dict) -> None:
     for ax, region in zip(axes, available):
         cf_path = results_path(f"counterfactual_tp_{region}.nc", cfg)
         ds_cf   = xr.open_dataset(cf_path)
-        factual = pd.Series(ds_cf["tp_factual"].values)
-        counterfactual = pd.Series(ds_cf["tp_cf_enso0"].values)
-        plot_counterfactual_cdfs(factual, counterfactual, region, ax=ax, n_boot=300)
+        try:
+            factual = pd.Series(ds_cf["tp_factual"].values)
+            counterfactual = pd.Series(ds_cf["tp_cf_enso0"].values)
+            plot_counterfactual_cdfs(factual, counterfactual, region, ax=ax, n_boot=300)
+        finally:
+            ds_cf.close()
 
     fig.suptitle("Precipitation distribution under do(ENSO = 0)", y=1.02)
     fig.tight_layout()
     save_fig(fig, "fig6_counterfactual_cdfs.pdf", cfg)
+
+
+# ---------------------------------------------------------------------------
+# Figure 7: Primary + holdout forest plot
+# ---------------------------------------------------------------------------
+
+def _forest_rows_from_ace(ace_results: dict, pooled: dict | None) -> list[dict]:
+    """Collect full-sample regional and pooled risk-difference rows."""
+    label_map = {
+        "pacific_northwest": "Pacific Northwest",
+        "california": "California",
+        "intermountain_west": "Intermountain West",
+    }
+    rows: list[dict] = []
+    for region in REGIONS:
+        if region not in ace_results:
+            continue
+        entry = ace_results[region]
+        for est_name, pretty in (("ipw", "IPW"), ("dr", "DR")):
+            est = entry.get(est_name) or {}
+            if est.get("ate") is None:
+                continue
+            rows.append(
+                {
+                    "label": f"{label_map.get(region, region)} {pretty}",
+                    "ate": float(est["ate"]),
+                    "ci_low": float(est["ci_low"]),
+                    "ci_high": float(est["ci_high"]),
+                    "primary": region == "pacific_northwest",
+                }
+            )
+
+    if pooled:
+        for est_name, pretty in (("ipw", "IPW"), ("dr", "DR")):
+            est = pooled.get(est_name) or {}
+            if est.get("ate") is None:
+                continue
+            rows.append(
+                {
+                    "label": f"Pooled western US {pretty}",
+                    "ate": float(est["ate"]),
+                    "ci_low": float(est["ci_low"]),
+                    "ci_high": float(est["ci_high"]),
+                    "primary": False,
+                }
+            )
+    return rows
+
+
+def _forest_rows_from_holdout(holdout: dict) -> list[dict]:
+    """Collect temporal-holdout rows for the frozen primary estimand."""
+    rows: list[dict] = []
+    for est_name, pretty in (("ipw", "IPW"), ("dr", "DR")):
+        est = ((holdout.get("holdout") or {}).get(est_name) or {})
+        if est.get("ate") is None:
+            continue
+        rows.append(
+            {
+                "label": f"Holdout Pacific Northwest {pretty}",
+                "ate": float(est["ate"]),
+                "ci_low": float(est["ci_low"]),
+                "ci_high": float(est["ci_high"]),
+                "primary": True,
+            }
+        )
+    return rows
+
+
+def _plot_forest_rows(ax: plt.Axes, rows: list[dict], title: str) -> None:
+    y = np.arange(len(rows))
+    ax.axvline(0.0, color="0.25", lw=0.9, ls="--", zorder=0)
+    for yi, row in zip(y, rows):
+        color = "#1f77b4" if row.get("primary") else "0.45"
+        x = row["ate"]
+        xerr = np.array([[x - row["ci_low"]], [row["ci_high"] - x]])
+        ax.errorbar(
+            x,
+            yi,
+            xerr=xerr,
+            fmt="o",
+            color=color,
+            ecolor=color,
+            capsize=3,
+            markersize=4.5,
+            lw=1.3,
+        )
+    ax.set_yticks(y)
+    ax.set_yticklabels([r["label"] for r in rows])
+    ax.invert_yaxis()
+    ax.set_title(title, loc="left", fontsize=10, fontweight="bold")
+    ax.grid(axis="x", color="0.9", lw=0.8)
+
+
+def fig7_primary_holdout_summary(cfg: dict) -> None:
+    plt.rcParams.update(FIGURE_STYLE)
+
+    ace_path = results_path("ace_all_regions.json", cfg)
+    holdout_path = results_path("holdout_validation.json", cfg)
+    pooled_path = results_path("pooled_ace.json", cfg)
+    missing = [p for p in (ace_path, holdout_path, pooled_path) if not p.exists()]
+    if missing:
+        log.warning("Missing inputs for fig7, skipping: %s", [str(p) for p in missing])
+        return
+
+    with open(ace_path) as f:
+        ace_results = json.load(f)
+    with open(holdout_path) as f:
+        holdout = json.load(f)
+    with open(pooled_path) as f:
+        pooled = json.load(f)
+
+    full_rows = _forest_rows_from_ace(ace_results, pooled)
+    holdout_rows = _forest_rows_from_holdout(holdout)
+    if not full_rows or not holdout_rows:
+        log.warning("Insufficient rows for fig7; skipping.")
+        return
+    holdout_rows += [{'ate':np.nan, 'ci_low':np.nan, 'ci_high':np.nan, 'label':None}] * 6
+    all_rows = full_rows + holdout_rows
+    xmin = min(r["ci_low"] for r in all_rows)
+    xmax = max(r["ci_high"] for r in all_rows)
+    pad = max(0.02, 0.08 * (xmax - xmin))
+
+    fig, (ax1, ax2) = plt.subplots(
+        1,
+        2,
+        figsize=(COL2, 3.8),
+        sharex=True,
+        gridspec_kw={"width_ratios": [1.35, 1.0]},
+    )
+    _plot_forest_rows(ax1, full_rows, "A. Full-sample regional and pooled estimates")
+    _plot_forest_rows(ax2, holdout_rows, "B. Temporal holdout")
+    ax1.set_xlabel("Risk difference for P(extreme precipitation)")
+    ax2.set_xlabel("Risk difference for P(extreme precipitation)")
+    ax1.set_xlim(xmin - pad, xmax + pad)
+
+    strict = bool((holdout.get("confirmation") or {}).get("strict_statistical_replication"))
+    split = holdout.get("split") or {}
+    ax2.text(
+        0.02,
+        0.03,
+        (
+            f"Strict replication: {'yes' if strict else 'no'}\n"
+            f"Train {split.get('train_start')}–{split.get('train_end')}; "
+            f"eval {split.get('eval_start')}–{split.get('eval_end')}"
+        ),
+        transform=ax2.transAxes,
+        ha="left",
+        va="bottom",
+        fontsize=8,
+        bbox={"boxstyle": "round,pad=0.25", "fc": "white", "ec": "0.8", "lw": 0.8},
+    )
+
+    fig.suptitle(
+        "Warm SST → ONDJFM extreme-precipitation risk: validated PNW signal, null wider context",
+        fontsize=10,
+        y=1.02,
+    )
+    fig.tight_layout()
+    save_fig(fig, "fig7_primary_holdout_summary.pdf", cfg)
 
 
 # ---------------------------------------------------------------------------
@@ -254,6 +428,12 @@ def main(cfg: dict) -> None:
         fig6_counterfactual_cdfs(cfg)
     except Exception as e:
         log.warning("fig6 failed: %s", e)
+
+    log.info("Generating Figure 7: primary + holdout summary …")
+    try:
+        fig7_primary_holdout_summary(cfg)
+    except Exception as e:
+        log.warning("fig7 failed: %s", e)
 
     log.info("All figures complete.")
 
