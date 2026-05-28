@@ -68,7 +68,7 @@ causal-precipitation-analysis/
 ```
 
 ## Screenshots 
-![positive results](.\figures\fig7_primary_holdout_summary.pdf)
+![positive results](https://github.com/user-attachments/files/28331240/fig7_primary_holdout_summary.pdf)
 
 
 ## Contact 📬
