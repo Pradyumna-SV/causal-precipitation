@@ -1,0 +1,230 @@
+{
+  "n_significant_edges": 34,
+  "edges": [
+    {
+      "source": "t2m",
+      "target": "tp",
+      "lag": 0,
+      "coef": 0.17072669244682692
+    },
+    {
+      "source": "swvl1",
+      "target": "tp",
+      "lag": 0,
+      "coef": 0.7242654257650487
+    },
+    {
+      "source": "t2m",
+      "target": "sst",
+      "lag": 0,
+      "coef": 0.4174567880738353
+    },
+    {
+      "source": "swvl1",
+      "target": "sst",
+      "lag": 0,
+      "coef": 0.17968092279807393
+    },
+    {
+      "source": "u850",
+      "target": "sst",
+      "lag": 0,
+      "coef": -0.13751388314182983
+    },
+    {
+      "source": "swvl1",
+      "target": "t2m",
+      "lag": 0,
+      "coef": -0.2697953285665006
+    },
+    {
+      "source": "tp",
+      "target": "z500",
+      "lag": 0,
+      "coef": -0.5835452770807037
+    },
+    {
+      "source": "t2m",
+      "target": "z500",
+      "lag": 0,
+      "coef": 0.7098260324598883
+    },
+    {
+      "source": "swvl1",
+      "target": "z500",
+      "lag": 0,
+      "coef": 0.17958033534685358
+    },
+    {
+      "source": "tp",
+      "target": "u850",
+      "lag": 0,
+      "coef": 0.7738038795505711
+    },
+    {
+      "source": "t2m",
+      "target": "u850",
+      "lag": 0,
+      "coef": -0.40771015906768093
+    },
+    {
+      "source": "swvl1",
+      "target": "u850",
+      "lag": 0,
+      "coef": -0.2254111957682524
+    },
+    {
+      "source": "z500",
+      "target": "u850",
+      "lag": 0,
+      "coef": 0.43048360763317195
+    },
+    {
+      "source": "tp",
+      "target": "v850",
+      "lag": 0,
+      "coef": 0.6039478272558991
+    },
+    {
+      "source": "t2m",
+      "target": "v850",
+      "lag": 0,
+      "coef": 0.4330621117251411
+    },
+    {
+      "source": "swvl1",
+      "target": "v850",
+      "lag": 0,
+      "coef": 0.15366185832844015
+    },
+    {
+      "source": "z500",
+      "target": "v850",
+      "lag": 0,
+      "coef": -0.1480341811342954
+    },
+    {
+      "source": "u850",
+      "target": "v850",
+      "lag": 0,
+      "coef": -0.15660293260913422
+    },
+    {
+      "source": "swvl1",
+      "target": "tp",
+      "lag": 1,
+      "coef": -0.23261048421490174
+    },
+    {
+      "source": "nino34",
+      "target": "tp",
+      "lag": 1,
+      "coef": -0.08494114202471215
+    },
+    {
+      "source": "sst",
+      "target": "sst",
+      "lag": 1,
+      "coef": 0.6072234286904942
+    },
+    {
+      "source": "sst",
+      "target": "t2m",
+      "lag": 1,
+      "coef": 0.11611326248031785
+    },
+    {
+      "source": "z500",
+      "target": "t2m",
+      "lag": 1,
+      "coef": 0.13159898828495853
+    },
+    {
+      "source": "nino34",
+      "target": "t2m",
+      "lag": 1,
+      "coef": 0.18432847475513248
+    },
+    {
+      "source": "tp",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": 0.18121839382320662
+    },
+    {
+      "source": "t2m",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": -0.08910322307875537
+    },
+    {
+      "source": "swvl1",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": 0.3377855419056769
+    },
+    {
+      "source": "u850",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": -0.14918099589241177
+    },
+    {
+      "source": "v850",
+      "target": "z500",
+      "lag": 1,
+      "coef": -0.09519669032689093
+    },
+    {
+      "source": "nino34",
+      "target": "z500",
+      "lag": 1,
+      "coef": -0.10647158487044717
+    },
+    {
+      "source": "t2m",
+      "target": "u850",
+      "lag": 1,
+      "coef": 0.12208637066059047
+    },
+    {
+      "source": "nino34",
+      "target": "u850",
+      "lag": 1,
+      "coef": -0.1819038609732611
+    },
+    {
+      "source": "sst",
+      "target": "v850",
+      "lag": 1,
+      "coef": -0.15229632038261645
+    },
+    {
+      "source": "nino34",
+      "target": "nino34",
+      "lag": 1,
+      "coef": 0.9576182862685111
+    }
+  ],
+  "var_names": [
+    "tp",
+    "sst",
+    "t2m",
+    "swvl1",
+    "z500",
+    "u850",
+    "v850",
+    "nino34"
+  ],
+  "causal_order": [
+    "nino34",
+    "swvl1",
+    "t2m",
+    "tp",
+    "z500",
+    "u850",
+    "sst",
+    "v850"
+  ],
+  "standardized_columns": true
+}

@@ -1,0 +1,47 @@
+{
+  "region": "intermountain_west",
+  "ace_profile": "continuous_sst_tp_extreme",
+  "treatment": "sst",
+  "outcome": "tp_extreme",
+  "adjustment_set": [
+    "nino34",
+    "swvl1"
+  ],
+  "identification_graph": "identification_dag (backbone \u222a structural)",
+  "ipw": {
+    "ate": 1.748575200081955,
+    "ci_low": -0.11401820768239924,
+    "ci_high": 6.539970631290016
+  },
+  "dr": {
+    "ate": null,
+    "ci_low": null,
+    "ci_high": null,
+    "note": "DR skipped for continuous SST (GPS IPW only; use discrete-T DR if discretizing)."
+  },
+  "sensitivity": {
+    "method_id": "not_applicable",
+    "is_rosenbaum_bounds": false,
+    "note": "Gamma scaling branch uses binary treatment; skipped for continuous SST."
+  },
+  "e_value": {
+    "reference": "not_applicable",
+    "note": "E-values / OR path requires binary tp_extreme outcome."
+  },
+  "inference_meta": {
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "n_boot": 2000,
+    "block_size": 12,
+    "n_rows": 270,
+    "propensity_trim": null,
+    "id_treatment_graph": "sst",
+    "id_outcome_graph": "tp_extreme"
+  }
+}

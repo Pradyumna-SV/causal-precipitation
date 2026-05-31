@@ -1,0 +1,64 @@
+{
+  "region": "intermountain_west",
+  "edges": [
+    {
+      "source": "nino34",
+      "target": "z500"
+    },
+    {
+      "source": "nino34",
+      "target": "sst"
+    },
+    {
+      "source": "z500",
+      "target": "tp"
+    },
+    {
+      "source": "sst",
+      "target": "tp"
+    },
+    {
+      "source": "tp",
+      "target": "tp_extreme"
+    },
+    {
+      "source": "nino34",
+      "target": "swvl1"
+    },
+    {
+      "source": "swvl1",
+      "target": "sst"
+    },
+    {
+      "source": "swvl1",
+      "target": "tp"
+    },
+    {
+      "source": "swvl1",
+      "target": "u850"
+    },
+    {
+      "source": "sst",
+      "target": "t2m"
+    },
+    {
+      "source": "tp",
+      "target": "t2m"
+    },
+    {
+      "source": "u850",
+      "target": "v850"
+    },
+    {
+      "source": "z500",
+      "target": "t2m"
+    },
+    {
+      "source": "v850",
+      "target": "t2m"
+    }
+  ],
+  "n_backbone": 5,
+  "n_structural": 10,
+  "n_identification": 14
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-27T23:07:00.896588Z",
+  "estimand": {
+    "region": "pacific_northwest",
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "treatment": "sst_warm",
+    "outcome": "tp_extreme",
+    "primary_adjustment": [
+      "z500"
+    ],
+    "sensitivity_n_boot": 300
+  },
+  "models": {
+    "crude": {
+      "covariates": [],
+      "n_rows": 270,
+      "risk_difference": 0.09418386491557221,
+      "ci95": [
+        -0.008203781512605021,
+        0.20531455171483842
+      ],
+      "ci_excludes_zero": false,
+      "odds_ratio": 1.896428571428571,
+      "crude_treated_rate": 0.23076923076923078,
+      "crude_control_rate": 0.13658536585365855,
+      "columns_used": [
+        "tp_extreme",
+        "sst_warm"
+      ]
+    },
+    "graph_adjusted": {
+      "covariates": [
+        "z500"
+      ],
+      "n_rows": 270,
+      "risk_difference": 0.14712731103926802,
+      "ci95": [
+        0.05095769803911288,
+        0.23701052055297206
+      ],
+      "ci_excludes_zero": true,
+      "odds_ratio": 3.0164106355319795,
+      "crude_treated_rate": 0.23076923076923078,
+      "crude_control_rate": 0.13658536585365855,
+      "columns_used": [
+        "tp_extreme",
+        "sst_warm",
+        "z500"
+      ]
+    },
+    "expanded_observed": {
+      "covariates": [
+        "z500",
+        "nino34",
+        "t2m",
+        "swvl1"
+      ],
+      "n_rows": 270,
+      "risk_difference": -0.006650518662191492,
+      "ci95": [
+        -0.10544335870205027,
+        0.10023964049758667
+      ],
+      "ci_excludes_zero": false,
+      "odds_ratio": 0.9324403983141206,
+      "crude_treated_rate": 0.23076923076923078,
+      "crude_control_rate": 0.13658536585365855,
+      "columns_used": [
+        "tp_extreme",
+        "sst_warm",
+        "z500",
+        "nino34",
+        "t2m",
+        "swvl1"
+      ]
+    }
+  },
+  "interpretation": "Baseline logistic models compare the causal workflow against simple associational models; they do not replace the identification analysis."
+}

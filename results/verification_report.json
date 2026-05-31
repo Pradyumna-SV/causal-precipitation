@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-05-27T23:07:53.859103Z",
+  "config_env": "local",
+  "expected_months": 540,
+  "data_layout": {
+    "processed_dir": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/processed",
+    "raw_dir": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/raw",
+    "panel_netcdfs": [
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/processed/panel_california.nc",
+        "name": "panel_california.nc",
+        "bytes": 96797
+      },
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/processed/panel_intermountain_west.nc",
+        "name": "panel_intermountain_west.nc",
+        "bytes": 96797
+      },
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/processed/panel_pacific_northwest.nc",
+        "name": "panel_pacific_northwest.nc",
+        "bytes": 96797
+      }
+    ],
+    "era5_raw_netcdfs": [
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/raw/era5_nino34_197901_202312.nc",
+        "name": "era5_nino34_197901_202312.nc",
+        "bytes": 6649837
+      },
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/raw/era5_plev_197901_202312.nc",
+        "name": "era5_plev_197901_202312.nc",
+        "bytes": 67889600
+      },
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/raw/era5_single_197901_202312.combined.nc",
+        "name": "era5_single_197901_202312.combined.nc",
+        "bytes": 33782883
+      },
+      {
+        "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/data/raw/era5_single_197901_202312.nc",
+        "name": "era5_single_197901_202312.nc",
+        "bytes": 34770338
+      }
+    ]
+  },
+  "contribution_assessment": {
+    "algorithmic_novelty": "low: PCMCI+, VARLiNGAM, IPW, DR, linear SCM are established; no new identification theorem or estimator class.",
+    "legitimate_contribution_axes": [
+      "End-to-end reproducible pipeline: ERA5 western US extremes, regional aggregation, discovery\u2192panel-DAG projection, ACE+counterfactual.",
+      "Explicit lag-0 acyclic projection from time-series discovery to monthly panel (documents a standard tradeoff rather than hiding it).",
+      "Engineering fixes material to correctness (duplicate CDS monthly timestamps, month-coordinate merge, cyclic/self-loop SCM pathologies)."
+    ],
+    "framing_for_venue": "Position as rigorous applied causal-climate case study + open implementation; claims must not oversell graph recovery as ground truth or reuse mislabeled sensitivity.",
+    "integrity_gate": "Verification script must pass before claiming 'validated pipeline' in a paper."
+  },
+  "panels": {
+    "pacific_northwest": {
+      "tp_std": 0.0012914810227063667,
+      "extreme_frac": 0.1,
+      "nino_tp_corr": -0.04550955763422884
+    },
+    "california": {
+      "tp_std": 0.0008658203471976191,
+      "extreme_frac": 0.1,
+      "nino_tp_corr": 0.1388020981766191
+    },
+    "intermountain_west": {
+      "tp_std": 0.0005044602668909572,
+      "extreme_frac": 0.1,
+      "nino_tp_corr": 0.0621369333222908
+    }
+  },
+  "counterfactual": {
+    "pacific_northwest": {
+      "rmse_factual_vs_cf": 0.00017643833475544174,
+      "mean_abs_delta": 0.00014036672900435155
+    },
+    "california": {
+      "rmse_factual_vs_cf": 8.828654329796058e-05,
+      "mean_abs_delta": 7.023696587826455e-05
+    },
+    "intermountain_west": {
+      "rmse_factual_vs_cf": 6.553336147402228e-05,
+      "mean_abs_delta": 5.2135515807936336e-05
+    }
+  },
+  "robustness_bundle": {
+    "status": "ok",
+    "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/robustness_report.json",
+    "gate_c_pass": true
+  },
+  "temporal_holdout": {
+    "status": "ok",
+    "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/holdout_validation.json",
+    "directional_replication": true,
+    "strict_statistical_replication": true
+  },
+  "feedback_diagnostics": {
+    "baseline_logistic.json": {
+      "status": "ok",
+      "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/baseline_logistic.json"
+    },
+    "backbone_sensitivity.json": {
+      "status": "ok",
+      "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/backbone_sensitivity.json"
+    },
+    "projection_lag_sensitivity.json": {
+      "status": "ok",
+      "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/projection_lag_sensitivity.json"
+    },
+    "holdout_interval_audit.json": {
+      "status": "ok",
+      "path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/holdout_interval_audit.json"
+    }
+  },
+  "status": "PASS",
+  "error_count": 0
+}

@@ -1,0 +1,33 @@
+{
+  "region": "california",
+  "edges": [
+    {
+      "source": "sst",
+      "target": "t2m"
+    },
+    {
+      "source": "sst",
+      "target": "z500"
+    },
+    {
+      "source": "swvl1",
+      "target": "tp"
+    },
+    {
+      "source": "t2m",
+      "target": "z500"
+    },
+    {
+      "source": "tp",
+      "target": "u850"
+    },
+    {
+      "source": "tp",
+      "target": "v850"
+    },
+    {
+      "source": "tp",
+      "target": "z500"
+    }
+  ]
+}

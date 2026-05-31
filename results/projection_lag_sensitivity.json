@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-27T23:07:53.357947Z",
+  "estimand": {
+    "region": "pacific_northwest",
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "treatment": "sst_warm",
+    "outcome": "tp_extreme",
+    "primary_adjustment": [
+      "z500"
+    ],
+    "sensitivity_n_boot": 300
+  },
+  "n_boot": 300,
+  "variants": {
+    "base_z500": {
+      "adjustment_set": [
+        "z500"
+      ],
+      "n_rows": 269,
+      "ipw": {
+        "ate": 0.1447320686062309,
+        "ci_low": 0.03639887260339949,
+        "ci_high": 0.24628570533247982,
+        "ps_mean": 0.24160574386317998,
+        "ps_std": 0.057229967786543885,
+        "overlap": {
+          "ess_ht": 189.28508886778187,
+          "ess_over_n": 0.703662040400676,
+          "ps_mean": 0.24160574386317998,
+          "ps_std": 0.057229967786543885,
+          "ps_min": 0.11773013516028179,
+          "ps_max": 0.40693887943697316,
+          "weight_p99": 6.160949602719853
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.14835858739038377,
+        "ci_low": 0.0391037380693457,
+        "ci_high": 0.2586177639409559,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "add_sst_lag1": {
+      "adjustment_set": [
+        "z500",
+        "sst_lag1"
+      ],
+      "n_rows": 269,
+      "ipw": {
+        "ate": 0.16556310256074955,
+        "ci_low": -0.05581066623686927,
+        "ci_high": 0.441133757753274,
+        "ps_mean": 0.24185358464770745,
+        "ps_std": 0.26194692432035477,
+        "overlap": {
+          "ess_ht": 62.83453096171914,
+          "ess_over_n": 0.2335856169580637,
+          "ps_mean": 0.24185358464770745,
+          "ps_std": 0.26194692432035477,
+          "ps_min": 0.01,
+          "ps_max": 0.988650551041717,
+          "weight_p99": 17.145138125947962
+        },
+        "ci_excludes_zero": false
+      },
+      "dr": {
+        "ate": 0.1908908327656291,
+        "ci_low": -0.04787497961369426,
+        "ci_high": 0.4645014520036405,
+        "ci_excludes_zero": false
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "lagged_circulation_enso": {
+      "adjustment_set": [
+        "z500",
+        "z500_lag1",
+        "nino34_lag1"
+      ],
+      "n_rows": 269,
+      "ipw": {
+        "ate": 0.226617932067597,
+        "ci_low": 0.04721793155032464,
+        "ci_high": 0.44887444601339743,
+        "ps_mean": 0.24163908177129773,
+        "ps_std": 0.1925519440103649,
+        "overlap": {
+          "ess_ht": 105.74026140897182,
+          "ess_over_n": 0.39308647363930044,
+          "ps_mean": 0.24163908177129773,
+          "ps_std": 0.1925519440103649,
+          "ps_min": 0.017641543335468773,
+          "ps_max": 0.8176044479185881,
+          "weight_p99": 12.550899433222842
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.20657589178078328,
+        "ci_low": 0.044879846010898,
+        "ci_high": 0.4111862244328592,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "autoregressive_tp_lag1": {
+      "adjustment_set": [
+        "z500",
+        "tp_lag1"
+      ],
+      "n_rows": 269,
+      "ipw": {
+        "ate": 0.15625753061810954,
+        "ci_low": 0.03664030101046026,
+        "ci_high": 0.2822908640368137,
+        "ps_mean": 0.24163177309010897,
+        "ps_std": 0.06224190520191038,
+        "overlap": {
+          "ess_ht": 186.7949340023133,
+          "ess_over_n": 0.6944049591164063,
+          "ps_mean": 0.24163177309010897,
+          "ps_std": 0.06224190520191038,
+          "ps_min": 0.10560985404006029,
+          "ps_max": 0.4213774461862418,
+          "weight_p99": 6.258876533671814
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.16088061667324555,
+        "ci_low": 0.04046376391471143,
+        "ci_high": 0.28804708897951187,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    }
+  },
+  "interpretation": "Lag sensitivity checks whether the PNW signal depends on the lag-0 panel projection. Lagged outcome adjustment changes the estimand and is treated as a stress check."
+}

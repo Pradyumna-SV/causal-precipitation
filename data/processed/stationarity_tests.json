@@ -1,0 +1,104 @@
+{
+  "pacific_northwest": {
+    "tp": {
+      "adf_pvalue": 3.1931263844647316e-29,
+      "stationary": true
+    },
+    "sst": {
+      "adf_pvalue": 1.3608207845139254e-16,
+      "stationary": true
+    },
+    "swvl1": {
+      "adf_pvalue": 8.551903469676438e-27,
+      "stationary": true
+    },
+    "t2m": {
+      "adf_pvalue": 1.9190533670860212e-24,
+      "stationary": true
+    },
+    "z500": {
+      "adf_pvalue": 0.0,
+      "stationary": true
+    },
+    "u850": {
+      "adf_pvalue": 3.0621412501793114e-25,
+      "stationary": true
+    },
+    "v850": {
+      "adf_pvalue": 0.0,
+      "stationary": true
+    },
+    "nino34": {
+      "adf_pvalue": 8.51446140688824e-08,
+      "stationary": true
+    }
+  },
+  "california": {
+    "tp": {
+      "adf_pvalue": 2.925599371448676e-26,
+      "stationary": true
+    },
+    "sst": {
+      "adf_pvalue": 1.0329007074058616e-06,
+      "stationary": true
+    },
+    "swvl1": {
+      "adf_pvalue": 2.5126325580809982e-21,
+      "stationary": true
+    },
+    "t2m": {
+      "adf_pvalue": 1.4127172811022027e-11,
+      "stationary": true
+    },
+    "z500": {
+      "adf_pvalue": 1.2220760057305793e-15,
+      "stationary": true
+    },
+    "u850": {
+      "adf_pvalue": 0.0,
+      "stationary": true
+    },
+    "v850": {
+      "adf_pvalue": 0.0,
+      "stationary": true
+    },
+    "nino34": {
+      "adf_pvalue": 8.51446140688824e-08,
+      "stationary": true
+    }
+  },
+  "intermountain_west": {
+    "tp": {
+      "adf_pvalue": 5.0763385039652e-12,
+      "stationary": true
+    },
+    "sst": {
+      "adf_pvalue": 3.0888279488422626e-30,
+      "stationary": true
+    },
+    "swvl1": {
+      "adf_pvalue": 1.2826391704043417e-08,
+      "stationary": true
+    },
+    "t2m": {
+      "adf_pvalue": 4.8629656696514534e-30,
+      "stationary": true
+    },
+    "z500": {
+      "adf_pvalue": 8.917070901840219e-26,
+      "stationary": true
+    },
+    "u850": {
+      "adf_pvalue": 4.365997694428397e-26,
+      "stationary": true
+    },
+    "v850": {
+      "adf_pvalue": 0.0,
+      "stationary": true
+    },
+    "nino34": {
+      "adf_pvalue": 8.51446140688824e-08,
+      "stationary": true
+    }
+  }
+}

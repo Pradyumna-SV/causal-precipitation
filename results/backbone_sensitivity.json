@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-27T23:07:35.105955Z",
+  "estimand": {
+    "region": "pacific_northwest",
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "treatment": "sst_warm",
+    "outcome": "tp_extreme",
+    "primary_adjustment": [
+      "z500"
+    ],
+    "sensitivity_n_boot": 300
+  },
+  "n_boot": 300,
+  "variants": {
+    "base_graph_identified": {
+      "type": "graph_variant",
+      "backbone_edges": [
+        [
+          "nino34",
+          "z500"
+        ],
+        [
+          "nino34",
+          "sst"
+        ],
+        [
+          "z500",
+          "tp"
+        ],
+        [
+          "sst",
+          "tp"
+        ],
+        [
+          "tp",
+          "tp_extreme"
+        ]
+      ],
+      "adjustment_set": [
+        "z500"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": 0.14604779394364853,
+        "ci_low": 0.03627302618907824,
+        "ci_high": 0.23514780013479,
+        "ps_mean": 0.24070892141586017,
+        "ps_std": 0.057829526646914,
+        "overlap": {
+          "ess_ht": 189.27709544178813,
+          "ess_over_n": 0.7010262794140302,
+          "ps_mean": 0.24070892141586017,
+          "ps_std": 0.057829526646914,
+          "ps_min": 0.11611420399362765,
+          "ps_max": 0.40834534303221026,
+          "weight_p99": 6.21661517255799
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.16000748239580323,
+        "ci_low": 0.050178671185996435,
+        "ci_high": 0.23606346407494297,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "add_nino34_to_tp": {
+      "type": "graph_variant",
+      "backbone_edges": [
+        [
+          "nino34",
+          "z500"
+        ],
+        [
+          "nino34",
+          "sst"
+        ],
+        [
+          "z500",
+          "tp"
+        ],
+        [
+          "sst",
+          "tp"
+        ],
+        [
+          "tp",
+          "tp_extreme"
+        ],
+        [
+          "nino34",
+          "tp"
+        ]
+      ],
+      "adjustment_set": [
+        "z500",
+        "nino34"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": 0.2319913579326439,
+        "ci_low": 0.04502898001646073,
+        "ci_high": 0.44591506708040035,
+        "ps_mean": 0.2407367925629325,
+        "ps_std": 0.17020020776915593,
+        "overlap": {
+          "ess_ht": 111.06780800083548,
+          "ess_over_n": 0.41136225185494624,
+          "ps_mean": 0.2407367925629325,
+          "ps_std": 0.17020020776915593,
+          "ps_min": 0.020322093628476055,
+          "ps_max": 0.7877353683087251,
+          "weight_p99": 13.459187304505082
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.22765438123107568,
+        "ci_low": 0.052561275559622374,
+        "ci_high": 0.4289997994584248,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "add_z500_to_sst": {
+      "type": "graph_variant",
+      "backbone_edges": [
+        [
+          "nino34",
+          "z500"
+        ],
+        [
+          "nino34",
+          "sst"
+        ],
+        [
+          "z500",
+          "tp"
+        ],
+        [
+          "sst",
+          "tp"
+        ],
+        [
+          "tp",
+          "tp_extreme"
+        ],
+        [
+          "z500",
+          "sst"
+        ]
+      ],
+      "adjustment_set": [
+        "z500"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": 0.14604779394364853,
+        "ci_low": 0.03627302618907824,
+        "ci_high": 0.23514780013479,
+        "ps_mean": 0.24070892141586017,
+        "ps_std": 0.057829526646914,
+        "overlap": {
+          "ess_ht": 189.27709544178813,
+          "ess_over_n": 0.7010262794140302,
+          "ps_mean": 0.24070892141586017,
+          "ps_std": 0.057829526646914,
+          "ps_min": 0.11611420399362765,
+          "ps_max": 0.40834534303221026,
+          "weight_p99": 6.21661517255799
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.16000748239580323,
+        "ci_low": 0.050178671185996435,
+        "ci_high": 0.23606346407494297,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "remove_nino34_to_sst": {
+      "type": "graph_variant",
+      "backbone_edges": [
+        [
+          "nino34",
+          "z500"
+        ],
+        [
+          "z500",
+          "tp"
+        ],
+        [
+          "sst",
+          "tp"
+        ],
+        [
+          "tp",
+          "tp_extreme"
+        ]
+      ],
+      "adjustment_set": [
+        "z500"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": 0.14604779394364853,
+        "ci_low": 0.03627302618907824,
+        "ci_high": 0.23514780013479,
+        "ps_mean": 0.24070892141586017,
+        "ps_std": 0.057829526646914,
+        "overlap": {
+          "ess_ht": 189.27709544178813,
+          "ess_over_n": 0.7010262794140302,
+          "ps_mean": 0.24070892141586017,
+          "ps_std": 0.057829526646914,
+          "ps_min": 0.11611420399362765,
+          "ps_max": 0.40834534303221026,
+          "weight_p99": 6.21661517255799
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.16000748239580323,
+        "ci_low": 0.050178671185996435,
+        "ci_high": 0.23606346407494297,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "override_z500_nino34": {
+      "type": "adjustment_override",
+      "adjustment_set": [
+        "z500",
+        "nino34"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": 0.2319913579326439,
+        "ci_low": 0.04502898001646073,
+        "ci_high": 0.44591506708040035,
+        "ps_mean": 0.2407367925629325,
+        "ps_std": 0.17020020776915593,
+        "overlap": {
+          "ess_ht": 111.06780800083548,
+          "ess_over_n": 0.41136225185494624,
+          "ps_mean": 0.2407367925629325,
+          "ps_std": 0.17020020776915593,
+          "ps_min": 0.020322093628476055,
+          "ps_max": 0.7877353683087251,
+          "weight_p99": 13.459187304505082
+        },
+        "ci_excludes_zero": true
+      },
+      "dr": {
+        "ate": 0.22765438123107568,
+        "ci_low": 0.052561275559622374,
+        "ci_high": 0.4289997994584248,
+        "ci_excludes_zero": true
+      },
+      "same_ipw_sign_as_base": true
+    },
+    "override_z500_t2m": {
+      "type": "adjustment_override",
+      "adjustment_set": [
+        "z500",
+        "t2m"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": -0.0002839132029237579,
+        "ci_low": -0.08780788598204171,
+        "ci_high": 0.0802491119596507,
+        "ps_mean": 0.24094185797066509,
+        "ps_std": 0.19173004574997982,
+        "overlap": {
+          "ess_ht": 92.18415060923716,
+          "ess_over_n": 0.3414227800342117,
+          "ps_mean": 0.24094185797066509,
+          "ps_std": 0.19173004574997982,
+          "ps_min": 0.01,
+          "ps_max": 0.8037760407383863,
+          "weight_p99": 13.73672977518447
+        },
+        "ci_excludes_zero": false
+      },
+      "dr": {
+        "ate": 0.0008712153054981729,
+        "ci_low": -0.10651425012885285,
+        "ci_high": 0.0900847404034279,
+        "ci_excludes_zero": false
+      },
+      "same_ipw_sign_as_base": false
+    },
+    "override_broad_observed": {
+      "type": "adjustment_override",
+      "adjustment_set": [
+        "z500",
+        "nino34",
+        "t2m",
+        "swvl1"
+      ],
+      "n_rows": 270,
+      "ipw": {
+        "ate": -0.023978553468509883,
+        "ci_low": -0.10137135490251574,
+        "ci_high": 0.06382945697135511,
+        "ps_mean": 0.2410272671177938,
+        "ps_std": 0.2483507032790498,
+        "overlap": {
+          "ess_ht": 53.50597675519517,
+          "ess_over_n": 0.19817028427850064,
+          "ps_mean": 0.2410272671177938,
+          "ps_std": 0.2483507032790498,
+          "ps_min": 0.01,
+          "ps_max": 0.95374590141128,
+          "weight_p99": 9.714977270118297
+        },
+        "ci_excludes_zero": false
+      },
+      "dr": {
+        "ate": -0.039262189510680945,
+        "ci_low": -0.21765151176052017,
+        "ci_high": 0.19229993342208734,
+        "ci_excludes_zero": false
+      },
+      "same_ipw_sign_as_base": false
+    }
+  },
+  "interpretation": "Backbone sensitivity probes whether the PNW result survives plausible graph and adjustment-set perturbations."
+}

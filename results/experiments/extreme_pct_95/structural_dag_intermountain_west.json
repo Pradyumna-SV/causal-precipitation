@@ -1,0 +1,45 @@
+{
+  "region": "intermountain_west",
+  "edges": [
+    {
+      "source": "nino34",
+      "target": "swvl1"
+    },
+    {
+      "source": "sst",
+      "target": "t2m"
+    },
+    {
+      "source": "swvl1",
+      "target": "sst"
+    },
+    {
+      "source": "swvl1",
+      "target": "tp"
+    },
+    {
+      "source": "swvl1",
+      "target": "u850"
+    },
+    {
+      "source": "tp",
+      "target": "t2m"
+    },
+    {
+      "source": "tp",
+      "target": "z500"
+    },
+    {
+      "source": "u850",
+      "target": "v850"
+    },
+    {
+      "source": "v850",
+      "target": "t2m"
+    },
+    {
+      "source": "z500",
+      "target": "t2m"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "dataset_decision": "not_implemented_in_current_release",
+  "reason": "The repository currently has ERA5 raw and processed artifacts, but no MERRA-2 or JRA-55 data products or adapter code. Implementing external validation would require data acquisition, variable harmonization, unit/calendar checks, and a panel adapter before any causal estimate would be comparable.",
+  "minimum_viable_scope": {
+    "region": "pacific_northwest",
+    "season": "ONDJFM",
+    "variables": ["tp", "sst", "z500"],
+    "treatment": "sst_warm",
+    "outcome": "dataset_specific_tp_extreme_p90",
+    "adjustment_set": ["z500"],
+    "split": {
+      "train": "1979-01 to 1999-12",
+      "eval": "2000-01 to 2023-12"
+    }
+  },
+  "candidate_datasets": {
+    "MERRA-2": {
+      "status": "feasible_future_work",
+      "main_bottleneck": "NASA Earthdata access and mapping MERRA-2 precipitation, SST/skin temperature or ocean surface fields, and 500 hPa geopotential/height into the existing monthly panel schema."
+    },
+    "JRA-55": {
+      "status": "feasible_future_work",
+      "main_bottleneck": "JRA-55 access and variable/calendar/unit harmonization, especially ensuring monthly precipitation and z500 semantics match the ERA5 panel abstraction."
+    }
+  },
+  "claim_policy": "Do not claim external replication in the CCAI or course deliverables until an adapter writes an external_validation_<dataset>.json artifact with the headline PNW estimate."
+}

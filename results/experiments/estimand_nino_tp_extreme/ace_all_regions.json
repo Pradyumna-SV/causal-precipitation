@@ -1,0 +1,314 @@
+{
+  "pacific_northwest": {
+    "region": "pacific_northwest",
+    "ace_profile": "nino_tp_extreme",
+    "treatment": "nino_hot",
+    "outcome": "tp_extreme",
+    "adjustment_set": [
+      "z500",
+      "t2m",
+      "swvl1"
+    ],
+    "identification_graph": "identification_dag (backbone \u222a structural)",
+    "ipw": {
+      "ate": -0.07035899383700832,
+      "ci_low": -0.13798278689697346,
+      "ci_high": -0.0005254441715683866,
+      "ps_mean": 0.2926578390637308,
+      "ps_std": 0.10499251457031632,
+      "overlap": {
+        "ess_ht": 185.62199391134206,
+        "ess_over_n": 0.687488866338304,
+        "ps_mean": 0.2926578390637308,
+        "ps_std": 0.10499251457031632,
+        "ps_min": 0.038847518439139736,
+        "ps_max": 0.5603811791409942,
+        "weight_p99": 6.835753108109688
+      }
+    },
+    "dr": {
+      "ate": -0.08445811942180338,
+      "ci_low": -0.16429322267664498,
+      "ci_high": 0.00025432469913394936
+    },
+    "sensitivity": {
+      "method_id": "crude_gamma_scaling_subgroup_means",
+      "is_rosenbaum_bounds": false,
+      "description": "Gamma perturbs crude group means only; not calibrated to IPW ATE.",
+      "ipw_ate": -0.07035899383700832,
+      "crude_risk_difference": -0.046192590628934965,
+      "gamma_bounds": {
+        "1.0": {
+          "crude_contrast_lower": -0.0462,
+          "crude_contrast_upper": -0.0462,
+          "sign_change": false
+        },
+        "1.5": {
+          "crude_contrast_lower": -0.0884,
+          "crude_contrast_upper": -0.1326,
+          "sign_change": false
+        },
+        "2.0": {
+          "crude_contrast_lower": -0.1095,
+          "crude_contrast_upper": -0.219,
+          "sign_change": false
+        },
+        "2.5": {
+          "crude_contrast_lower": -0.1221,
+          "crude_contrast_upper": -0.3054,
+          "sign_change": false
+        },
+        "3.0": {
+          "crude_contrast_lower": -0.1306,
+          "crude_contrast_upper": -0.3917,
+          "sign_change": false
+        },
+        "4.0": {
+          "crude_contrast_lower": -0.1411,
+          "crude_contrast_upper": -0.5645,
+          "sign_change": false
+        },
+        "5.0": {
+          "crude_contrast_lower": -0.1475,
+          "crude_contrast_upper": -0.7373,
+          "sign_change": false
+        }
+      },
+      "critical_gamma": null,
+      "interpretation": "Crude scaling bounds do not cross zero for tested \u0393"
+    },
+    "e_value": {
+      "reference": "VanderWeele_Ding_2017_minimum_e_value_point_estimate",
+      "crude_risk_ratio": 0.7326428845416189,
+      "crude_e_value_min": 2.0706757732832837,
+      "adjusted_odds_ratio": 0.4097657959256604,
+      "adjusted_or_ci95_low": 0.15862543717647568,
+      "adjusted_or_ci95_high": 1.0585188006371713,
+      "adjusted_or_e_value_min": 4.315311407417269
+    },
+    "inference_meta": {
+      "season_months": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "n_boot": 2000,
+      "block_size": 12,
+      "n_rows": 270,
+      "propensity_trim": null,
+      "id_treatment_graph": "nino34",
+      "id_outcome_graph": "tp_extreme"
+    }
+  },
+  "california": {
+    "region": "california",
+    "ace_profile": "nino_tp_extreme",
+    "treatment": "nino_hot",
+    "outcome": "tp_extreme",
+    "adjustment_set": [
+      "z500",
+      "t2m",
+      "swvl1"
+    ],
+    "identification_graph": "identification_dag (backbone \u222a structural)",
+    "ipw": {
+      "ate": -0.07242192364503079,
+      "ci_low": -0.13518017440298072,
+      "ci_high": 0.001157547658116758,
+      "ps_mean": 0.29252304047900923,
+      "ps_std": 0.13016443240506406,
+      "overlap": {
+        "ess_ht": 191.48634685560344,
+        "ess_over_n": 0.7092086920577906,
+        "ps_mean": 0.29252304047900923,
+        "ps_std": 0.13016443240506406,
+        "ps_min": 0.07227093396182392,
+        "ps_max": 0.7058771253699301,
+        "weight_p99": 7.149902600695979
+      }
+    },
+    "dr": {
+      "ate": -0.07738897309725112,
+      "ci_low": -0.15861047344568657,
+      "ci_high": 0.002382123129556128
+    },
+    "sensitivity": {
+      "method_id": "crude_gamma_scaling_subgroup_means",
+      "is_rosenbaum_bounds": false,
+      "description": "Gamma perturbs crude group means only; not calibrated to IPW ATE.",
+      "ipw_ate": -0.07242192364503079,
+      "crude_risk_difference": 0.052886208496255555,
+      "gamma_bounds": {
+        "1.0": {
+          "crude_contrast_lower": 0.0529,
+          "crude_contrast_upper": 0.0529,
+          "sign_change": false
+        },
+        "1.5": {
+          "crude_contrast_lower": -0.0188,
+          "crude_contrast_upper": -0.0283,
+          "sign_change": false
+        },
+        "2.0": {
+          "crude_contrast_lower": -0.0547,
+          "crude_contrast_upper": -0.1094,
+          "sign_change": false
+        },
+        "2.5": {
+          "crude_contrast_lower": -0.0762,
+          "crude_contrast_upper": -0.1906,
+          "sign_change": false
+        },
+        "3.0": {
+          "crude_contrast_lower": -0.0906,
+          "crude_contrast_upper": -0.2717,
+          "sign_change": false
+        },
+        "4.0": {
+          "crude_contrast_lower": -0.1085,
+          "crude_contrast_upper": -0.434,
+          "sign_change": false
+        },
+        "5.0": {
+          "crude_contrast_lower": -0.1193,
+          "crude_contrast_upper": -0.5963,
+          "sign_change": false
+        }
+      },
+      "critical_gamma": null,
+      "interpretation": "Crude scaling bounds do not cross zero for tested \u0393"
+    },
+    "e_value": {
+      "reference": "VanderWeele_Ding_2017_minimum_e_value_point_estimate",
+      "crude_risk_ratio": 1.3258472846059617,
+      "crude_e_value_min": 1.9831324110853612,
+      "adjusted_odds_ratio": 0.4369621438132247,
+      "adjusted_or_ci95_low": 0.16619776179019205,
+      "adjusted_or_ci95_high": 1.1488476924670419,
+      "adjusted_or_e_value_min": 4.00574399842054
+    },
+    "inference_meta": {
+      "season_months": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "n_boot": 2000,
+      "block_size": 12,
+      "n_rows": 270,
+      "propensity_trim": null,
+      "id_treatment_graph": "nino34",
+      "id_outcome_graph": "tp_extreme"
+    }
+  },
+  "intermountain_west": {
+    "region": "intermountain_west",
+    "ace_profile": "nino_tp_extreme",
+    "treatment": "nino_hot",
+    "outcome": "tp_extreme",
+    "adjustment_set": [
+      "z500",
+      "t2m",
+      "swvl1"
+    ],
+    "identification_graph": "identification_dag (backbone \u222a structural)",
+    "ipw": {
+      "ate": -0.07745660058844786,
+      "ci_low": -0.14054964427867472,
+      "ci_high": -0.004208829232973477,
+      "ps_mean": 0.2925894407389484,
+      "ps_std": 0.1079841286403018,
+      "overlap": {
+        "ess_ht": 203.37560373291907,
+        "ess_over_n": 0.7532429767885892,
+        "ps_mean": 0.2925894407389484,
+        "ps_std": 0.1079841286403018,
+        "ps_min": 0.11456591798129202,
+        "ps_max": 0.6291828981698573,
+        "weight_p99": 6.047571124248336
+      }
+    },
+    "dr": {
+      "ate": -0.08611181765411262,
+      "ci_low": -0.14440240845917532,
+      "ci_high": -0.004943603116496865
+    },
+    "sensitivity": {
+      "method_id": "crude_gamma_scaling_subgroup_means",
+      "is_rosenbaum_bounds": false,
+      "description": "Gamma perturbs crude group means only; not calibrated to IPW ATE.",
+      "ipw_ate": -0.07745660058844786,
+      "crude_risk_difference": -0.03923387898469083,
+      "gamma_bounds": {
+        "1.0": {
+          "crude_contrast_lower": -0.0392,
+          "crude_contrast_upper": -0.0392,
+          "sign_change": false
+        },
+        "1.5": {
+          "crude_contrast_lower": -0.0646,
+          "crude_contrast_upper": -0.0968,
+          "sign_change": false
+        },
+        "2.0": {
+          "crude_contrast_lower": -0.0772,
+          "crude_contrast_upper": -0.1544,
+          "sign_change": false
+        },
+        "2.5": {
+          "crude_contrast_lower": -0.0848,
+          "crude_contrast_upper": -0.212,
+          "sign_change": false
+        },
+        "3.0": {
+          "crude_contrast_lower": -0.0899,
+          "crude_contrast_upper": -0.2696,
+          "sign_change": false
+        },
+        "4.0": {
+          "crude_contrast_lower": -0.0962,
+          "crude_contrast_upper": -0.3848,
+          "sign_change": false
+        },
+        "5.0": {
+          "crude_contrast_lower": -0.1,
+          "crude_contrast_upper": -0.5,
+          "sign_change": false
+        }
+      },
+      "critical_gamma": null,
+      "interpretation": "Crude scaling bounds do not cross zero for tested \u0393"
+    },
+    "e_value": {
+      "reference": "VanderWeele_Ding_2017_minimum_e_value_point_estimate",
+      "crude_risk_ratio": 0.6593785960874569,
+      "crude_e_value_min": 2.401697302726846,
+      "adjusted_odds_ratio": 0.11878394654037132,
+      "adjusted_or_ci95_low": 0.027401006745596108,
+      "adjusted_or_ci95_high": 0.5149309325276339,
+      "adjusted_or_e_value_min": 16.321490768223825
+    },
+    "inference_meta": {
+      "season_months": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "n_boot": 2000,
+      "block_size": 12,
+      "n_rows": 270,
+      "propensity_trim": null,
+      "id_treatment_graph": "nino34",
+      "id_outcome_graph": "tp_extreme"
+    }
+  }
+}

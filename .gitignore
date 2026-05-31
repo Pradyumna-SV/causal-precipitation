@@ -26,10 +26,8 @@ env/
 # ── Data (managed on PVC, never committed) ────────────────────────────────────
 data/**
 !data/
-!data/raw/
 !data/processed/
-!data/**/.gitkeep
-!data/.gitignore
+!data/processed/**
 
 # ── Results and figures (keep directory structure only) ───────────────────────
 results/**

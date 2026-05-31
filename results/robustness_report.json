@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-27T23:06:20.011771Z",
+  "gate_b_region": "pacific_northwest",
+  "gates": {
+    "B_statistical_strength_informational": {
+      "ipw_ci_excludes_zero": true,
+      "dr_ci_excludes_zero": true,
+      "note": "Not used by verify_pipeline; informational for analysis_plan gate B."
+    },
+    "C_identification_stress": {
+      "pass": true,
+      "checks_passed_count": 3,
+      "checks_required_min": 2
+    },
+    "D_multiplicity": {
+      "note": "See config/analysis_registry.yaml and manuscript_brief multiplicity block."
+    }
+  },
+  "checks": {
+    "overlap": {
+      "pass": true,
+      "ess_over_n": 0.7010262794140302,
+      "ess_ht": 189.27709544178813,
+      "ps_mean": 0.24070892141586017,
+      "ps_std": 0.057829526646914,
+      "ps_min": 0.11611420399362765,
+      "ps_max": 0.40834534303221026,
+      "weight_p99": 6.21661517255799
+    },
+    "placebo_ipw_month_shuffle": {
+      "pass": true,
+      "ate": -0.005253052328406033,
+      "ci95": [
+        -0.10104354765734773,
+        0.09677448779039628
+      ],
+      "n_boot": 500
+    },
+    "dr_ipw_agreement": {
+      "pass": true,
+      "sign_agree": true,
+      "ci_overlap": true
+    },
+    "season_ndjf_alternate_artifact": {
+      "status": "compared",
+      "pass": false,
+      "baseline_ipw_ate": 0.14604779394364853,
+      "season_ndjf_ipw_ate": -0.038977430023009296,
+      "artifact": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/grid/season_ndjf/ace_all_regions.json"
+    }
+  },
+  "optional_checks_list": [
+    {
+      "name": "overlap_ess",
+      "pass": true
+    },
+    {
+      "name": "placebo_month_shuffle_ipw_ci_includes_zero",
+      "pass": true
+    },
+    {
+      "name": "dr_ipw_ci_overlap_same_sign",
+      "pass": true
+    },
+    {
+      "name": "season_ndjf_sign_stable",
+      "pass": false
+    }
+  ]
+}

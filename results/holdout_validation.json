@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-27T23:06:23.138362Z",
+  "estimand": {
+    "region": "pacific_northwest",
+    "treatment": "sst_warm",
+    "outcome": "tp_extreme",
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "adjustment_set": [
+      "z500"
+    ],
+    "frozen_from": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/ace_all_regions.json"
+  },
+  "split": {
+    "train_start": "1979-01",
+    "train_end": "1999-12",
+    "eval_start": "2000-01",
+    "eval_end": "2023-12",
+    "n_train_rows": 126,
+    "n_eval_rows": 144
+  },
+  "estimation": {
+    "n_boot": 2000,
+    "block_size": 12,
+    "nuisance_policy": "Fit propensity / DR nuisance models on train window only; evaluate ATE and bootstrap CI on held-out eval window."
+  },
+  "full_sample_reference": {
+    "ipw": {
+      "ate": 0.14604779394364853,
+      "ci95": [
+        0.026254761103309897,
+        0.23679014224428926
+      ]
+    },
+    "dr": {
+      "ate": 0.16000748239580323,
+      "ci95": [
+        0.040000199627284724,
+        0.24524243990295208
+      ]
+    }
+  },
+  "holdout": {
+    "ipw": {
+      "ate": 0.18028661214377423,
+      "ci_low": 0.015550461691907252,
+      "ci_high": 0.36121177739141413,
+      "ci_excludes_zero": true,
+      "ps_mean": 0.21617668571256315,
+      "ps_std": 0.01013932564902308,
+      "overlap": {
+        "ess_ht": 98.6923214682767,
+        "ess_over_n": 0.6853633435296993,
+        "ps_min": 0.18848788621867343,
+        "ps_max": 0.24257753214711492,
+        "weight_p99": 4.944616232058344
+      }
+    },
+    "dr": {
+      "ate": 0.06613751962959813,
+      "ci_low": 0.04535221295352376,
+      "ci_high": 0.0851700739678027,
+      "ci_excludes_zero": true,
+      "note": "Nuisance/DR models fit on train window; CI bootstraps evaluation-window months with nuisance models fixed."
+    }
+  },
+  "confirmation": {
+    "directional_replication": true,
+    "strict_statistical_replication": true,
+    "interpretation": "Strict replication requires IPW and DR held-out CIs to exclude zero in the full-sample direction; directional replication only requires held-out point estimates to agree in sign."
+  }
+}

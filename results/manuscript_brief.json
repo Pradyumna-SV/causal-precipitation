@@ -1,0 +1,1044 @@
+{
+  "generated_at": "2026-05-27T23:07:54.366673Z",
+  "venue_target": "NeurIPS Workshop on Climate Change AI (CCAI)",
+  "analysis": {
+    "tier": "primary",
+    "active_preset": null,
+    "primary_preset_id": "primary",
+    "registry_path": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/config/analysis_registry.yaml",
+    "analysis_plan_doc": "docs/analysis_plan.md"
+  },
+  "multiplicity": {
+    "strategy": "Closed list of YAML presets under config/presets/; exploratory rows must be labeled in manuscript_brief. Prefer temporal holdout (documented in analysis_plan) or BH-FDR across the exploratory_presets list below.",
+    "bh_fdr_target_q": 0.1,
+    "exploratory_preset_ids": [
+      "full_year",
+      "season_ndjf",
+      "overlap_trim",
+      "pooled_western"
+    ]
+  },
+  "goal_one_sentence": "Seek a single identification-credible estimand (warm SST \u2192 extreme precip) on ERA5 western US panels with backbone + projected discovery DAG, IPW/DR, and falsification/robustness checks\u2014iterate only over a closed preset list (see docs/analysis_plan.md) rather than leading with spatial heterogeneity as the main claim.",
+  "estimand": {
+    "primary_treatment": "sst_warm",
+    "primary_outcome": "tp_extreme",
+    "calendar_window": "1979-01 \u2014 2023-12",
+    "discovery_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "inference_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "n_bootstrap": 2000,
+    "block_size_months": 12,
+    "identification": "Pearl backdoor adjustment sets from DoWhy on identification_dag = domain backbone merged with lag-0 acyclic consensus DAG.",
+    "secondary": "Exploratory IPW contrast for warm Ni\u00f1o 3.4 vs not (binary); empty backdoor uses marginal propensity\u2014not a fully mediated causal effect without a front-door estimator."
+  },
+  "empirical_summary": [
+    {
+      "region": "pacific_northwest",
+      "n_inference_rows": 270,
+      "adjustment_set": [
+        "z500"
+      ],
+      "ipw_risk_difference": {
+        "ate": 0.14604779394364853,
+        "ci95": [
+          0.026254761103309897,
+          0.23679014224428926
+        ],
+        "ci_crosses_zero": false
+      },
+      "dr_risk_difference": {
+        "ate": 0.16000748239580323,
+        "ci95": [
+          0.040000199627284724,
+          0.24524243990295208
+        ],
+        "ci_crosses_zero": false
+      },
+      "e_value_adjusted_or_min": 5.482647138103957,
+      "nino_hot_ipw": {
+        "ate": -0.04619259062893494,
+        "ci95": [
+          -0.11500853863381857,
+          0.022830992410092055
+        ],
+        "ci_crosses_zero": true,
+        "adjustment_set": []
+      }
+    },
+    {
+      "region": "california",
+      "n_inference_rows": 270,
+      "adjustment_set": [
+        "nino34"
+      ],
+      "ipw_risk_difference": {
+        "ate": 0.0006607193171971892,
+        "ci95": [
+          -0.10949613348939646,
+          0.1522553951240837
+        ],
+        "ci_crosses_zero": true
+      },
+      "dr_risk_difference": {
+        "ate": -0.020326017141701583,
+        "ci95": [
+          -0.11871511355773609,
+          0.14590664740291723
+        ],
+        "ci_crosses_zero": true
+      },
+      "e_value_adjusted_or_min": 1.4717528768420751,
+      "nino_hot_ipw": {
+        "ate": 0.05288620849625561,
+        "ci95": [
+          -0.035953549179746885,
+          0.18465356517436352
+        ],
+        "ci_crosses_zero": true,
+        "adjustment_set": []
+      }
+    },
+    {
+      "region": "intermountain_west",
+      "n_inference_rows": 270,
+      "adjustment_set": [
+        "swvl1",
+        "nino34"
+      ],
+      "ipw_risk_difference": {
+        "ate": 0.013707425206050644,
+        "ci95": [
+          -0.08081953908585973,
+          0.13534703401516615
+        ],
+        "ci_crosses_zero": true
+      },
+      "dr_risk_difference": {
+        "ate": 0.02305589104767092,
+        "ci95": [
+          -0.07464329604924494,
+          0.14711187600383852
+        ],
+        "ci_crosses_zero": true
+      },
+      "e_value_adjusted_or_min": 1.9083369873760803,
+      "nino_hot_ipw": {
+        "ate": -0.0392338789846908,
+        "ci95": [
+          -0.10197808081076627,
+          0.05501659206667687
+        ],
+        "ci_crosses_zero": true,
+        "adjustment_set": []
+      }
+    }
+  ],
+  "spatial_variation_notes": [
+    "pacific_northwest: primary IPW 95% CI excludes zero",
+    "california: primary IPW 95% CI includes zero",
+    "intermountain_west: primary IPW 95% CI includes zero"
+  ],
+  "robustness_report": {
+    "schema_version": 1,
+    "generated_at": "2026-05-27T23:06:20.011771Z",
+    "gate_b_region": "pacific_northwest",
+    "gates": {
+      "B_statistical_strength_informational": {
+        "ipw_ci_excludes_zero": true,
+        "dr_ci_excludes_zero": true,
+        "note": "Not used by verify_pipeline; informational for analysis_plan gate B."
+      },
+      "C_identification_stress": {
+        "pass": true,
+        "checks_passed_count": 3,
+        "checks_required_min": 2
+      },
+      "D_multiplicity": {
+        "note": "See config/analysis_registry.yaml and manuscript_brief multiplicity block."
+      }
+    },
+    "checks": {
+      "overlap": {
+        "pass": true,
+        "ess_over_n": 0.7010262794140302,
+        "ess_ht": 189.27709544178813,
+        "ps_mean": 0.24070892141586017,
+        "ps_std": 0.057829526646914,
+        "ps_min": 0.11611420399362765,
+        "ps_max": 0.40834534303221026,
+        "weight_p99": 6.21661517255799
+      },
+      "placebo_ipw_month_shuffle": {
+        "pass": true,
+        "ate": -0.005253052328406033,
+        "ci95": [
+          -0.10104354765734773,
+          0.09677448779039628
+        ],
+        "n_boot": 500
+      },
+      "dr_ipw_agreement": {
+        "pass": true,
+        "sign_agree": true,
+        "ci_overlap": true
+      },
+      "season_ndjf_alternate_artifact": {
+        "status": "compared",
+        "pass": false,
+        "baseline_ipw_ate": 0.14604779394364853,
+        "season_ndjf_ipw_ate": -0.038977430023009296,
+        "artifact": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/grid/season_ndjf/ace_all_regions.json"
+      }
+    },
+    "optional_checks_list": [
+      {
+        "name": "overlap_ess",
+        "pass": true
+      },
+      {
+        "name": "placebo_month_shuffle_ipw_ci_includes_zero",
+        "pass": true
+      },
+      {
+        "name": "dr_ipw_ci_overlap_same_sign",
+        "pass": true
+      },
+      {
+        "name": "season_ndjf_sign_stable",
+        "pass": false
+      }
+    ]
+  },
+  "temporal_holdout_validation": {
+    "schema_version": 1,
+    "generated_at": "2026-05-27T23:06:23.138362Z",
+    "estimand": {
+      "region": "pacific_northwest",
+      "treatment": "sst_warm",
+      "outcome": "tp_extreme",
+      "season_months": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "adjustment_set": [
+        "z500"
+      ],
+      "frozen_from": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/ace_all_regions.json"
+    },
+    "split": {
+      "train_start": "1979-01",
+      "train_end": "1999-12",
+      "eval_start": "2000-01",
+      "eval_end": "2023-12",
+      "n_train_rows": 126,
+      "n_eval_rows": 144
+    },
+    "estimation": {
+      "n_boot": 2000,
+      "block_size": 12,
+      "nuisance_policy": "Fit propensity / DR nuisance models on train window only; evaluate ATE and bootstrap CI on held-out eval window."
+    },
+    "full_sample_reference": {
+      "ipw": {
+        "ate": 0.14604779394364853,
+        "ci95": [
+          0.026254761103309897,
+          0.23679014224428926
+        ]
+      },
+      "dr": {
+        "ate": 0.16000748239580323,
+        "ci95": [
+          0.040000199627284724,
+          0.24524243990295208
+        ]
+      }
+    },
+    "holdout": {
+      "ipw": {
+        "ate": 0.18028661214377423,
+        "ci_low": 0.015550461691907252,
+        "ci_high": 0.36121177739141413,
+        "ci_excludes_zero": true,
+        "ps_mean": 0.21617668571256315,
+        "ps_std": 0.01013932564902308,
+        "overlap": {
+          "ess_ht": 98.6923214682767,
+          "ess_over_n": 0.6853633435296993,
+          "ps_min": 0.18848788621867343,
+          "ps_max": 0.24257753214711492,
+          "weight_p99": 4.944616232058344
+        }
+      },
+      "dr": {
+        "ate": 0.06613751962959813,
+        "ci_low": 0.04535221295352376,
+        "ci_high": 0.0851700739678027,
+        "ci_excludes_zero": true,
+        "note": "Nuisance/DR models fit on train window; CI bootstraps evaluation-window months with nuisance models fixed."
+      }
+    },
+    "confirmation": {
+      "directional_replication": true,
+      "strict_statistical_replication": true,
+      "interpretation": "Strict replication requires IPW and DR held-out CIs to exclude zero in the full-sample direction; directional replication only requires held-out point estimates to agree in sign."
+    }
+  },
+  "feedback_response_diagnostics": {
+    "baseline_logistic": {
+      "schema_version": 1,
+      "generated_at": "2026-05-27T23:07:00.896588Z",
+      "estimand": {
+        "region": "pacific_northwest",
+        "season_months": [
+          10,
+          11,
+          12,
+          1,
+          2,
+          3
+        ],
+        "treatment": "sst_warm",
+        "outcome": "tp_extreme",
+        "primary_adjustment": [
+          "z500"
+        ],
+        "sensitivity_n_boot": 300
+      },
+      "models": {
+        "crude": {
+          "covariates": [],
+          "n_rows": 270,
+          "risk_difference": 0.09418386491557221,
+          "ci95": [
+            -0.008203781512605021,
+            0.20531455171483842
+          ],
+          "ci_excludes_zero": false,
+          "odds_ratio": 1.896428571428571,
+          "crude_treated_rate": 0.23076923076923078,
+          "crude_control_rate": 0.13658536585365855,
+          "columns_used": [
+            "tp_extreme",
+            "sst_warm"
+          ]
+        },
+        "graph_adjusted": {
+          "covariates": [
+            "z500"
+          ],
+          "n_rows": 270,
+          "risk_difference": 0.14712731103926802,
+          "ci95": [
+            0.05095769803911288,
+            0.23701052055297206
+          ],
+          "ci_excludes_zero": true,
+          "odds_ratio": 3.0164106355319795,
+          "crude_treated_rate": 0.23076923076923078,
+          "crude_control_rate": 0.13658536585365855,
+          "columns_used": [
+            "tp_extreme",
+            "sst_warm",
+            "z500"
+          ]
+        },
+        "expanded_observed": {
+          "covariates": [
+            "z500",
+            "nino34",
+            "t2m",
+            "swvl1"
+          ],
+          "n_rows": 270,
+          "risk_difference": -0.006650518662191492,
+          "ci95": [
+            -0.10544335870205027,
+            0.10023964049758667
+          ],
+          "ci_excludes_zero": false,
+          "odds_ratio": 0.9324403983141206,
+          "crude_treated_rate": 0.23076923076923078,
+          "crude_control_rate": 0.13658536585365855,
+          "columns_used": [
+            "tp_extreme",
+            "sst_warm",
+            "z500",
+            "nino34",
+            "t2m",
+            "swvl1"
+          ]
+        }
+      },
+      "interpretation": "Baseline logistic models compare the causal workflow against simple associational models; they do not replace the identification analysis."
+    },
+    "backbone_sensitivity": {
+      "schema_version": 1,
+      "generated_at": "2026-05-27T23:07:35.105955Z",
+      "estimand": {
+        "region": "pacific_northwest",
+        "season_months": [
+          10,
+          11,
+          12,
+          1,
+          2,
+          3
+        ],
+        "treatment": "sst_warm",
+        "outcome": "tp_extreme",
+        "primary_adjustment": [
+          "z500"
+        ],
+        "sensitivity_n_boot": 300
+      },
+      "n_boot": 300,
+      "variants": {
+        "base_graph_identified": {
+          "type": "graph_variant",
+          "backbone_edges": [
+            [
+              "nino34",
+              "z500"
+            ],
+            [
+              "nino34",
+              "sst"
+            ],
+            [
+              "z500",
+              "tp"
+            ],
+            [
+              "sst",
+              "tp"
+            ],
+            [
+              "tp",
+              "tp_extreme"
+            ]
+          ],
+          "adjustment_set": [
+            "z500"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": 0.14604779394364853,
+            "ci_low": 0.03627302618907824,
+            "ci_high": 0.23514780013479,
+            "ps_mean": 0.24070892141586017,
+            "ps_std": 0.057829526646914,
+            "overlap": {
+              "ess_ht": 189.27709544178813,
+              "ess_over_n": 0.7010262794140302,
+              "ps_mean": 0.24070892141586017,
+              "ps_std": 0.057829526646914,
+              "ps_min": 0.11611420399362765,
+              "ps_max": 0.40834534303221026,
+              "weight_p99": 6.21661517255799
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.16000748239580323,
+            "ci_low": 0.050178671185996435,
+            "ci_high": 0.23606346407494297,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "add_nino34_to_tp": {
+          "type": "graph_variant",
+          "backbone_edges": [
+            [
+              "nino34",
+              "z500"
+            ],
+            [
+              "nino34",
+              "sst"
+            ],
+            [
+              "z500",
+              "tp"
+            ],
+            [
+              "sst",
+              "tp"
+            ],
+            [
+              "tp",
+              "tp_extreme"
+            ],
+            [
+              "nino34",
+              "tp"
+            ]
+          ],
+          "adjustment_set": [
+            "z500",
+            "nino34"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": 0.2319913579326439,
+            "ci_low": 0.04502898001646073,
+            "ci_high": 0.44591506708040035,
+            "ps_mean": 0.2407367925629325,
+            "ps_std": 0.17020020776915593,
+            "overlap": {
+              "ess_ht": 111.06780800083548,
+              "ess_over_n": 0.41136225185494624,
+              "ps_mean": 0.2407367925629325,
+              "ps_std": 0.17020020776915593,
+              "ps_min": 0.020322093628476055,
+              "ps_max": 0.7877353683087251,
+              "weight_p99": 13.459187304505082
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.22765438123107568,
+            "ci_low": 0.052561275559622374,
+            "ci_high": 0.4289997994584248,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "add_z500_to_sst": {
+          "type": "graph_variant",
+          "backbone_edges": [
+            [
+              "nino34",
+              "z500"
+            ],
+            [
+              "nino34",
+              "sst"
+            ],
+            [
+              "z500",
+              "tp"
+            ],
+            [
+              "sst",
+              "tp"
+            ],
+            [
+              "tp",
+              "tp_extreme"
+            ],
+            [
+              "z500",
+              "sst"
+            ]
+          ],
+          "adjustment_set": [
+            "z500"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": 0.14604779394364853,
+            "ci_low": 0.03627302618907824,
+            "ci_high": 0.23514780013479,
+            "ps_mean": 0.24070892141586017,
+            "ps_std": 0.057829526646914,
+            "overlap": {
+              "ess_ht": 189.27709544178813,
+              "ess_over_n": 0.7010262794140302,
+              "ps_mean": 0.24070892141586017,
+              "ps_std": 0.057829526646914,
+              "ps_min": 0.11611420399362765,
+              "ps_max": 0.40834534303221026,
+              "weight_p99": 6.21661517255799
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.16000748239580323,
+            "ci_low": 0.050178671185996435,
+            "ci_high": 0.23606346407494297,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "remove_nino34_to_sst": {
+          "type": "graph_variant",
+          "backbone_edges": [
+            [
+              "nino34",
+              "z500"
+            ],
+            [
+              "z500",
+              "tp"
+            ],
+            [
+              "sst",
+              "tp"
+            ],
+            [
+              "tp",
+              "tp_extreme"
+            ]
+          ],
+          "adjustment_set": [
+            "z500"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": 0.14604779394364853,
+            "ci_low": 0.03627302618907824,
+            "ci_high": 0.23514780013479,
+            "ps_mean": 0.24070892141586017,
+            "ps_std": 0.057829526646914,
+            "overlap": {
+              "ess_ht": 189.27709544178813,
+              "ess_over_n": 0.7010262794140302,
+              "ps_mean": 0.24070892141586017,
+              "ps_std": 0.057829526646914,
+              "ps_min": 0.11611420399362765,
+              "ps_max": 0.40834534303221026,
+              "weight_p99": 6.21661517255799
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.16000748239580323,
+            "ci_low": 0.050178671185996435,
+            "ci_high": 0.23606346407494297,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "override_z500_nino34": {
+          "type": "adjustment_override",
+          "adjustment_set": [
+            "z500",
+            "nino34"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": 0.2319913579326439,
+            "ci_low": 0.04502898001646073,
+            "ci_high": 0.44591506708040035,
+            "ps_mean": 0.2407367925629325,
+            "ps_std": 0.17020020776915593,
+            "overlap": {
+              "ess_ht": 111.06780800083548,
+              "ess_over_n": 0.41136225185494624,
+              "ps_mean": 0.2407367925629325,
+              "ps_std": 0.17020020776915593,
+              "ps_min": 0.020322093628476055,
+              "ps_max": 0.7877353683087251,
+              "weight_p99": 13.459187304505082
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.22765438123107568,
+            "ci_low": 0.052561275559622374,
+            "ci_high": 0.4289997994584248,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "override_z500_t2m": {
+          "type": "adjustment_override",
+          "adjustment_set": [
+            "z500",
+            "t2m"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": -0.0002839132029237579,
+            "ci_low": -0.08780788598204171,
+            "ci_high": 0.0802491119596507,
+            "ps_mean": 0.24094185797066509,
+            "ps_std": 0.19173004574997982,
+            "overlap": {
+              "ess_ht": 92.18415060923716,
+              "ess_over_n": 0.3414227800342117,
+              "ps_mean": 0.24094185797066509,
+              "ps_std": 0.19173004574997982,
+              "ps_min": 0.01,
+              "ps_max": 0.8037760407383863,
+              "weight_p99": 13.73672977518447
+            },
+            "ci_excludes_zero": false
+          },
+          "dr": {
+            "ate": 0.0008712153054981729,
+            "ci_low": -0.10651425012885285,
+            "ci_high": 0.0900847404034279,
+            "ci_excludes_zero": false
+          },
+          "same_ipw_sign_as_base": false
+        },
+        "override_broad_observed": {
+          "type": "adjustment_override",
+          "adjustment_set": [
+            "z500",
+            "nino34",
+            "t2m",
+            "swvl1"
+          ],
+          "n_rows": 270,
+          "ipw": {
+            "ate": -0.023978553468509883,
+            "ci_low": -0.10137135490251574,
+            "ci_high": 0.06382945697135511,
+            "ps_mean": 0.2410272671177938,
+            "ps_std": 0.2483507032790498,
+            "overlap": {
+              "ess_ht": 53.50597675519517,
+              "ess_over_n": 0.19817028427850064,
+              "ps_mean": 0.2410272671177938,
+              "ps_std": 0.2483507032790498,
+              "ps_min": 0.01,
+              "ps_max": 0.95374590141128,
+              "weight_p99": 9.714977270118297
+            },
+            "ci_excludes_zero": false
+          },
+          "dr": {
+            "ate": -0.039262189510680945,
+            "ci_low": -0.21765151176052017,
+            "ci_high": 0.19229993342208734,
+            "ci_excludes_zero": false
+          },
+          "same_ipw_sign_as_base": false
+        }
+      },
+      "interpretation": "Backbone sensitivity probes whether the PNW result survives plausible graph and adjustment-set perturbations."
+    },
+    "projection_lag_sensitivity": {
+      "schema_version": 1,
+      "generated_at": "2026-05-27T23:07:53.357947Z",
+      "estimand": {
+        "region": "pacific_northwest",
+        "season_months": [
+          10,
+          11,
+          12,
+          1,
+          2,
+          3
+        ],
+        "treatment": "sst_warm",
+        "outcome": "tp_extreme",
+        "primary_adjustment": [
+          "z500"
+        ],
+        "sensitivity_n_boot": 300
+      },
+      "n_boot": 300,
+      "variants": {
+        "base_z500": {
+          "adjustment_set": [
+            "z500"
+          ],
+          "n_rows": 269,
+          "ipw": {
+            "ate": 0.1447320686062309,
+            "ci_low": 0.03639887260339949,
+            "ci_high": 0.24628570533247982,
+            "ps_mean": 0.24160574386317998,
+            "ps_std": 0.057229967786543885,
+            "overlap": {
+              "ess_ht": 189.28508886778187,
+              "ess_over_n": 0.703662040400676,
+              "ps_mean": 0.24160574386317998,
+              "ps_std": 0.057229967786543885,
+              "ps_min": 0.11773013516028179,
+              "ps_max": 0.40693887943697316,
+              "weight_p99": 6.160949602719853
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.14835858739038377,
+            "ci_low": 0.0391037380693457,
+            "ci_high": 0.2586177639409559,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "add_sst_lag1": {
+          "adjustment_set": [
+            "z500",
+            "sst_lag1"
+          ],
+          "n_rows": 269,
+          "ipw": {
+            "ate": 0.16556310256074955,
+            "ci_low": -0.05581066623686927,
+            "ci_high": 0.441133757753274,
+            "ps_mean": 0.24185358464770745,
+            "ps_std": 0.26194692432035477,
+            "overlap": {
+              "ess_ht": 62.83453096171914,
+              "ess_over_n": 0.2335856169580637,
+              "ps_mean": 0.24185358464770745,
+              "ps_std": 0.26194692432035477,
+              "ps_min": 0.01,
+              "ps_max": 0.988650551041717,
+              "weight_p99": 17.145138125947962
+            },
+            "ci_excludes_zero": false
+          },
+          "dr": {
+            "ate": 0.1908908327656291,
+            "ci_low": -0.04787497961369426,
+            "ci_high": 0.4645014520036405,
+            "ci_excludes_zero": false
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "lagged_circulation_enso": {
+          "adjustment_set": [
+            "z500",
+            "z500_lag1",
+            "nino34_lag1"
+          ],
+          "n_rows": 269,
+          "ipw": {
+            "ate": 0.226617932067597,
+            "ci_low": 0.04721793155032464,
+            "ci_high": 0.44887444601339743,
+            "ps_mean": 0.24163908177129773,
+            "ps_std": 0.1925519440103649,
+            "overlap": {
+              "ess_ht": 105.74026140897182,
+              "ess_over_n": 0.39308647363930044,
+              "ps_mean": 0.24163908177129773,
+              "ps_std": 0.1925519440103649,
+              "ps_min": 0.017641543335468773,
+              "ps_max": 0.8176044479185881,
+              "weight_p99": 12.550899433222842
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.20657589178078328,
+            "ci_low": 0.044879846010898,
+            "ci_high": 0.4111862244328592,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        },
+        "autoregressive_tp_lag1": {
+          "adjustment_set": [
+            "z500",
+            "tp_lag1"
+          ],
+          "n_rows": 269,
+          "ipw": {
+            "ate": 0.15625753061810954,
+            "ci_low": 0.03664030101046026,
+            "ci_high": 0.2822908640368137,
+            "ps_mean": 0.24163177309010897,
+            "ps_std": 0.06224190520191038,
+            "overlap": {
+              "ess_ht": 186.7949340023133,
+              "ess_over_n": 0.6944049591164063,
+              "ps_mean": 0.24163177309010897,
+              "ps_std": 0.06224190520191038,
+              "ps_min": 0.10560985404006029,
+              "ps_max": 0.4213774461862418,
+              "weight_p99": 6.258876533671814
+            },
+            "ci_excludes_zero": true
+          },
+          "dr": {
+            "ate": 0.16088061667324555,
+            "ci_low": 0.04046376391471143,
+            "ci_high": 0.28804708897951187,
+            "ci_excludes_zero": true
+          },
+          "same_ipw_sign_as_base": true
+        }
+      },
+      "interpretation": "Lag sensitivity checks whether the PNW signal depends on the lag-0 panel projection. Lagged outcome adjustment changes the estimand and is treated as a stress check."
+    },
+    "holdout_interval_audit": {
+      "schema_version": 1,
+      "generated_at": "2026-05-27T23:07:53.358596Z",
+      "source": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/holdout_validation.json",
+      "ipw_ci_width": 0.34566131569950687,
+      "dr_ci_width": 0.039817861014278935,
+      "width_ratio_ipw_over_dr": 8.681061887667711,
+      "ipw_overlap": {
+        "ess_ht": 98.6923214682767,
+        "ess_over_n": 0.6853633435296993,
+        "ps_min": 0.18848788621867343,
+        "ps_max": 0.24257753214711492,
+        "weight_p99": 4.944616232058344
+      },
+      "dr_policy": "LinearDRLearner nuisance models are fit on the train window only; the reported CI bootstraps evaluation rows with nuisance models fixed.",
+      "ipw_policy": "Propensity scores are fit on the train window and held fixed for evaluation-row bootstrap resamples.",
+      "interpretation": "The DR interval is much tighter because its held-out bootstrap varies evaluation rows through a fixed outcome-effect model, while IPW remains sensitive to inverse-propensity weights. This supports reporting both estimators and describing DR as model-dependent stabilization, not a free robustness guarantee."
+    }
+  },
+  "external_validation_scope": {
+    "schema_version": 1,
+    "dataset_decision": "not_implemented_in_current_release",
+    "reason": "The repository currently has ERA5 raw and processed artifacts, but no MERRA-2 or JRA-55 data products or adapter code. Implementing external validation would require data acquisition, variable harmonization, unit/calendar checks, and a panel adapter before any causal estimate would be comparable.",
+    "minimum_viable_scope": {
+      "region": "pacific_northwest",
+      "season": "ONDJFM",
+      "variables": [
+        "tp",
+        "sst",
+        "z500"
+      ],
+      "treatment": "sst_warm",
+      "outcome": "dataset_specific_tp_extreme_p90",
+      "adjustment_set": [
+        "z500"
+      ],
+      "split": {
+        "train": "1979-01 to 1999-12",
+        "eval": "2000-01 to 2023-12"
+      }
+    },
+    "candidate_datasets": {
+      "MERRA-2": {
+        "status": "feasible_future_work",
+        "main_bottleneck": "NASA Earthdata access and mapping MERRA-2 precipitation, SST/skin temperature or ocean surface fields, and 500 hPa geopotential/height into the existing monthly panel schema."
+      },
+      "JRA-55": {
+        "status": "feasible_future_work",
+        "main_bottleneck": "JRA-55 access and variable/calendar/unit harmonization, especially ensuring monthly precipitation and z500 semantics match the ERA5 panel abstraction."
+      }
+    },
+    "claim_policy": "Do not claim external replication in the CCAI or course deliverables until an adapter writes an external_validation_<dataset>.json artifact with the headline PNW estimate."
+  },
+  "pooled_ace_artifact": {
+    "schema_version": 1,
+    "regions_stacked": [
+      "pacific_northwest",
+      "california",
+      "intermountain_west"
+    ],
+    "reference_region_dummy_omitted": "california",
+    "treatment": "sst_warm",
+    "outcome": "tp_extreme",
+    "covariates": [
+      "z500",
+      "t2m",
+      "swvl1",
+      "nino34",
+      "reg__pacific_northwest",
+      "reg__intermountain_west"
+    ],
+    "inference_meta": {
+      "season_months": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "n_boot": 2000,
+      "block_size": 12,
+      "n_rows": 810,
+      "cluster_bootstrap_time_col": "_time"
+    },
+    "ipw": {
+      "ate": -0.006695089485043104,
+      "ci_low": -0.0622323185260277,
+      "ci_high": 0.05422059538124429,
+      "ps_mean": 0.25196871401317844,
+      "ps_std": 0.21699767359967645,
+      "overlap": {
+        "ess_ht": 243.500548883815,
+        "ess_over_n": 0.3006179615849568,
+        "ps_mean": 0.25196871401317844,
+        "ps_std": 0.21699767359967645,
+        "ps_min": 0.01,
+        "ps_max": 0.911259978130839,
+        "weight_p99": 13.146861396675249
+      }
+    },
+    "dr": {
+      "ate": -0.015157219341178266,
+      "ci_low": -0.09323832341814044,
+      "ci_high": 0.06198934963213016
+    }
+  },
+  "panel_diagnostics": {
+    "pacific_northwest": {
+      "tp_std": 0.0012914810227063667,
+      "extreme_frac": 0.1,
+      "nino_tp_corr": -0.04550955763422884
+    },
+    "california": {
+      "tp_std": 0.0008658203471976191,
+      "extreme_frac": 0.1,
+      "nino_tp_corr": 0.1388020981766191
+    },
+    "intermountain_west": {
+      "tp_std": 0.0005044602668909572,
+      "extreme_frac": 0.1,
+      "nino_tp_corr": 0.0621369333222908
+    }
+  },
+  "counterfactual_metrics": {
+    "pacific_northwest": {
+      "rmse_factual_vs_cf": 0.00017643833475544174,
+      "mean_abs_delta": 0.00014036672900435155
+    },
+    "california": {
+      "rmse_factual_vs_cf": 8.828654329796058e-05,
+      "mean_abs_delta": 7.023696587826455e-05
+    },
+    "intermountain_west": {
+      "rmse_factual_vs_cf": 6.553336147402228e-05,
+      "mean_abs_delta": 5.2135515807936336e-05
+    }
+  },
+  "integrity": {
+    "verification_status": "PASS",
+    "verification_report": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/verification_report.json",
+    "expected_panel_months": 540
+  },
+  "contribution_framing": {
+    "algorithmic_novelty": "low: PCMCI+, VARLiNGAM, IPW, DR, linear SCM are established; no new identification theorem or estimator class.",
+    "legitimate_contribution_axes": [
+      "End-to-end reproducible pipeline: ERA5 western US extremes, regional aggregation, discovery\u2192panel-DAG projection, ACE+counterfactual.",
+      "Explicit lag-0 acyclic projection from time-series discovery to monthly panel (documents a standard tradeoff rather than hiding it).",
+      "Engineering fixes material to correctness (duplicate CDS monthly timestamps, month-coordinate merge, cyclic/self-loop SCM pathologies)."
+    ],
+    "framing_for_venue": "Position as rigorous applied causal-climate case study + open implementation; claims must not oversell graph recovery as ground truth or reuse mislabeled sensitivity.",
+    "integrity_gate": "Verification script must pass before claiming 'validated pipeline' in a paper."
+  },
+  "guardrails_for_claims": [
+    "Do not assert PCMCI+/VARLiNGAM recover the true data-generating DAG.",
+    "Primary causal interpretation rides on identification_assumptions (DAG + positivity), not discovery p-values.",
+    "Gamma sensitivity block is crude stress on unadjusted contrasts, not Rosenbaum-style bounds.",
+    "Linear SCM counterfactual is a stylized sensitivity analysis; small |\u0394tp| implies weak linear propagation, not absence of all ENSO effects.",
+    "Treat exploratory CAUSAL_PRESET runs as multiplicity-budget items (see analysis.multiplicity); do not upgrade them to main claims without holdout or FDR plan.",
+    "Temporal holdout validation is confirmatory only when strict_statistical_replication is true; directional replication alone is supporting but not decisive.",
+    "Broad observed-covariate adjustment is a stress check, not the primary estimand; when it induces poor overlap or adjusts potential mediators, interpret null estimates as sensitivity evidence rather than automatic refutation.",
+    "Do not claim MERRA-2/JRA-55 replication unless an external_validation_<dataset>.json artifact exists."
+  ]
+}

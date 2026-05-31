@@ -1,0 +1,124 @@
+{
+  "region": "us_west_coarse",
+  "ace_profile": "warm_sst_tp_extreme",
+  "treatment": "sst_warm",
+  "outcome": "tp_extreme",
+  "adjustment_set": [
+    "nino34"
+  ],
+  "identification_graph": "identification_dag (backbone \u222a structural)",
+  "ipw": {
+    "ate": 0.03458514691430872,
+    "ci_low": -0.07024211529851399,
+    "ci_high": 0.16239326487753628,
+    "ps_mean": 0.27037022166395686,
+    "ps_std": 0.159554792385191,
+    "overlap": {
+      "ess_ht": 165.3552651997918,
+      "ess_over_n": 0.612426908147377,
+      "ps_mean": 0.27037022166395686,
+      "ps_std": 0.159554792385191,
+      "ps_min": 0.04686106912318601,
+      "ps_max": 0.7448054705118363,
+      "weight_p99": 8.002924053828568
+    }
+  },
+  "dr": {
+    "ate": 0.029408008855350668,
+    "ci_low": -0.07798186275379689,
+    "ci_high": 0.16102919801944587
+  },
+  "sensitivity": {
+    "method_id": "crude_gamma_scaling_subgroup_means",
+    "is_rosenbaum_bounds": false,
+    "description": "Gamma perturbs crude group means only; not calibrated to IPW ATE.",
+    "ipw_ate": 0.03458514691430872,
+    "crude_risk_difference": 0.04102635421737014,
+    "gamma_bounds": {
+      "1.0": {
+        "crude_contrast_lower": 0.041,
+        "crude_contrast_upper": 0.041,
+        "sign_change": false
+      },
+      "1.5": {
+        "crude_contrast_lower": -0.0183,
+        "crude_contrast_upper": -0.0275,
+        "sign_change": false
+      },
+      "2.0": {
+        "crude_contrast_lower": -0.048,
+        "crude_contrast_upper": -0.096,
+        "sign_change": false
+      },
+      "2.5": {
+        "crude_contrast_lower": -0.0658,
+        "crude_contrast_upper": -0.1646,
+        "sign_change": false
+      },
+      "3.0": {
+        "crude_contrast_lower": -0.0777,
+        "crude_contrast_upper": -0.2331,
+        "sign_change": false
+      },
+      "4.0": {
+        "crude_contrast_lower": -0.0925,
+        "crude_contrast_upper": -0.3701,
+        "sign_change": false
+      },
+      "5.0": {
+        "crude_contrast_lower": -0.1014,
+        "crude_contrast_upper": -0.5072,
+        "sign_change": false
+      }
+    },
+    "critical_gamma": null,
+    "interpretation": "Crude scaling bounds do not cross zero for tested \u0393"
+  },
+  "e_value": {
+    "reference": "VanderWeele_Ding_2017_minimum_e_value_point_estimate",
+    "crude_risk_ratio": 1.2993404363267376,
+    "crude_e_value_min": 1.9229950948894867,
+    "adjusted_odds_ratio": 1.4299514713378958,
+    "adjusted_or_ci95_low": 0.6572636097502383,
+    "adjusted_or_ci95_high": 3.1110214836911894,
+    "adjusted_or_e_value_min": 2.2140495130670645
+  },
+  "inference_meta": {
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "n_boot": 2000,
+    "block_size": 12,
+    "n_rows": 270,
+    "propensity_trim": null,
+    "id_treatment_graph": "sst",
+    "id_outcome_graph": "tp_extreme"
+  },
+  "alternative_estimands": {
+    "ipw_warm_nino34_vs_not": {
+      "description": "IPW risk difference for tp_extreme: warm Ni\u00f1o 3.4 vs not; backdoor adjustment sets identified with treatment node nino34.",
+      "treatment_column": "nino_hot",
+      "nino34_threshold_K": 0.5,
+      "adjustment_set": [],
+      "ate": 0.005301875538471779,
+      "ci_low": -0.04247372280784519,
+      "ci_high": 0.0918411635487528,
+      "ps_mean": 0.29259259259259257,
+      "ps_std": 0.0,
+      "overlap": {
+        "ess_ht": 223.5407407407407,
+        "ess_over_n": 0.8279286694101506,
+        "ps_mean": 0.29259259259259257,
+        "ps_std": 0.0,
+        "ps_min": 0.29259259259259257,
+        "ps_max": 0.29259259259259257,
+        "weight_p99": 3.417721518987342
+      }
+    }
+  }
+}

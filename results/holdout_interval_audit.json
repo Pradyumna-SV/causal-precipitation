@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-27T23:07:53.358596Z",
+  "source": "/home/mox/Documents/GradSchool/ClassWork/DSC245/causal-precipitation/results/holdout_validation.json",
+  "ipw_ci_width": 0.34566131569950687,
+  "dr_ci_width": 0.039817861014278935,
+  "width_ratio_ipw_over_dr": 8.681061887667711,
+  "ipw_overlap": {
+    "ess_ht": 98.6923214682767,
+    "ess_over_n": 0.6853633435296993,
+    "ps_min": 0.18848788621867343,
+    "ps_max": 0.24257753214711492,
+    "weight_p99": 4.944616232058344
+  },
+  "dr_policy": "LinearDRLearner nuisance models are fit on the train window only; the reported CI bootstraps evaluation rows with nuisance models fixed.",
+  "ipw_policy": "Propensity scores are fit on the train window and held fixed for evaluation-row bootstrap resamples.",
+  "interpretation": "The DR interval is much tighter because its held-out bootstrap varies evaluation rows through a fixed outcome-effect model, while IPW remains sensitive to inverse-propensity weights. This supports reporting both estimators and describing DR as model-dependent stabilization, not a free robustness guarantee."
+}

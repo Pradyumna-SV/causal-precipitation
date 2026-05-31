@@ -1,0 +1,56 @@
+{
+  "region": "pacific_northwest",
+  "edges": [
+    {
+      "source": "nino34",
+      "target": "z500"
+    },
+    {
+      "source": "nino34",
+      "target": "sst"
+    },
+    {
+      "source": "z500",
+      "target": "tp"
+    },
+    {
+      "source": "sst",
+      "target": "tp"
+    },
+    {
+      "source": "tp",
+      "target": "tp_extreme"
+    },
+    {
+      "source": "swvl1",
+      "target": "tp"
+    },
+    {
+      "source": "swvl1",
+      "target": "sst"
+    },
+    {
+      "source": "t2m",
+      "target": "sst"
+    },
+    {
+      "source": "t2m",
+      "target": "v850"
+    },
+    {
+      "source": "t2m",
+      "target": "z500"
+    },
+    {
+      "source": "tp",
+      "target": "u850"
+    },
+    {
+      "source": "tp",
+      "target": "v850"
+    }
+  ],
+  "n_backbone": 5,
+  "n_structural": 9,
+  "n_identification": 12
+}

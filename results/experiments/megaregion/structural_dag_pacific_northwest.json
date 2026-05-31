@@ -1,0 +1,41 @@
+{
+  "region": "pacific_northwest",
+  "edges": [
+    {
+      "source": "nino34",
+      "target": "sst"
+    },
+    {
+      "source": "sst",
+      "target": "swvl1"
+    },
+    {
+      "source": "t2m",
+      "target": "sst"
+    },
+    {
+      "source": "t2m",
+      "target": "v850"
+    },
+    {
+      "source": "t2m",
+      "target": "z500"
+    },
+    {
+      "source": "tp",
+      "target": "v850"
+    },
+    {
+      "source": "tp",
+      "target": "z500"
+    },
+    {
+      "source": "u850",
+      "target": "tp"
+    },
+    {
+      "source": "z500",
+      "target": "v850"
+    }
+  ]
+}

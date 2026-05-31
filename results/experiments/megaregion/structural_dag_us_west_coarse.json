@@ -1,0 +1,41 @@
+{
+  "region": "us_west_coarse",
+  "edges": [
+    {
+      "source": "nino34",
+      "target": "sst"
+    },
+    {
+      "source": "nino34",
+      "target": "swvl1"
+    },
+    {
+      "source": "swvl1",
+      "target": "tp"
+    },
+    {
+      "source": "t2m",
+      "target": "sst"
+    },
+    {
+      "source": "t2m",
+      "target": "z500"
+    },
+    {
+      "source": "tp",
+      "target": "u850"
+    },
+    {
+      "source": "tp",
+      "target": "v850"
+    },
+    {
+      "source": "tp",
+      "target": "z500"
+    },
+    {
+      "source": "v850",
+      "target": "t2m"
+    }
+  ]
+}

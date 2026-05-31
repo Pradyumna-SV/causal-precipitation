@@ -1,0 +1,236 @@
+{
+  "n_significant_edges": 35,
+  "edges": [
+    {
+      "source": "tp",
+      "target": "sst",
+      "lag": 0,
+      "coef": -0.210510115313354
+    },
+    {
+      "source": "tp",
+      "target": "t2m",
+      "lag": 0,
+      "coef": -0.34053267150885674
+    },
+    {
+      "source": "sst",
+      "target": "t2m",
+      "lag": 0,
+      "coef": 0.5572699716791946
+    },
+    {
+      "source": "v850",
+      "target": "t2m",
+      "lag": 0,
+      "coef": 0.2375730269213257
+    },
+    {
+      "source": "tp",
+      "target": "swvl1",
+      "lag": 0,
+      "coef": 0.5886414214262904
+    },
+    {
+      "source": "sst",
+      "target": "swvl1",
+      "lag": 0,
+      "coef": -0.20099396425049124
+    },
+    {
+      "source": "t2m",
+      "target": "swvl1",
+      "lag": 0,
+      "coef": 0.09936528136644837
+    },
+    {
+      "source": "v850",
+      "target": "swvl1",
+      "lag": 0,
+      "coef": -0.09033172986063052
+    },
+    {
+      "source": "nino34",
+      "target": "swvl1",
+      "lag": 0,
+      "coef": 0.07433059943499688
+    },
+    {
+      "source": "tp",
+      "target": "z500",
+      "lag": 0,
+      "coef": -0.37294646833261325
+    },
+    {
+      "source": "t2m",
+      "target": "z500",
+      "lag": 0,
+      "coef": 0.7318768422489197
+    },
+    {
+      "source": "swvl1",
+      "target": "z500",
+      "lag": 0,
+      "coef": 0.17031541971888614
+    },
+    {
+      "source": "u850",
+      "target": "z500",
+      "lag": 0,
+      "coef": -0.15450485567308136
+    },
+    {
+      "source": "v850",
+      "target": "z500",
+      "lag": 0,
+      "coef": -0.17916925937057304
+    },
+    {
+      "source": "sst",
+      "target": "u850",
+      "lag": 0,
+      "coef": -0.39269365759419617
+    },
+    {
+      "source": "swvl1",
+      "target": "u850",
+      "lag": 0,
+      "coef": -0.4628188079007489
+    },
+    {
+      "source": "v850",
+      "target": "u850",
+      "lag": 0,
+      "coef": 0.10355641084832179
+    },
+    {
+      "source": "tp",
+      "target": "v850",
+      "lag": 0,
+      "coef": 0.25422742803693915
+    },
+    {
+      "source": "swvl1",
+      "target": "tp",
+      "lag": 1,
+      "coef": 0.17341442125609566
+    },
+    {
+      "source": "t2m",
+      "target": "sst",
+      "lag": 1,
+      "coef": 0.35718492837169424
+    },
+    {
+      "source": "sst",
+      "target": "t2m",
+      "lag": 1,
+      "coef": -0.11667188329316677
+    },
+    {
+      "source": "t2m",
+      "target": "t2m",
+      "lag": 1,
+      "coef": 0.09816123739272206
+    },
+    {
+      "source": "z500",
+      "target": "t2m",
+      "lag": 1,
+      "coef": 0.08517825584976749
+    },
+    {
+      "source": "swvl1",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": 0.42838829067995576
+    },
+    {
+      "source": "z500",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": -0.06441713390382436
+    },
+    {
+      "source": "u850",
+      "target": "swvl1",
+      "lag": 1,
+      "coef": -0.07643661203723906
+    },
+    {
+      "source": "tp",
+      "target": "z500",
+      "lag": 1,
+      "coef": 0.05954948275464125
+    },
+    {
+      "source": "sst",
+      "target": "z500",
+      "lag": 1,
+      "coef": 0.058827221872909626
+    },
+    {
+      "source": "t2m",
+      "target": "z500",
+      "lag": 1,
+      "coef": -0.10713090531674559
+    },
+    {
+      "source": "swvl1",
+      "target": "z500",
+      "lag": 1,
+      "coef": -0.08717924264469601
+    },
+    {
+      "source": "nino34",
+      "target": "z500",
+      "lag": 1,
+      "coef": -0.09027931614056914
+    },
+    {
+      "source": "t2m",
+      "target": "u850",
+      "lag": 1,
+      "coef": 0.201183753469226
+    },
+    {
+      "source": "swvl1",
+      "target": "u850",
+      "lag": 1,
+      "coef": 0.2766896125776649
+    },
+    {
+      "source": "nino34",
+      "target": "u850",
+      "lag": 1,
+      "coef": -0.1638095854174705
+    },
+    {
+      "source": "nino34",
+      "target": "nino34",
+      "lag": 1,
+      "coef": 0.9576182862685111
+    }
+  ],
+  "var_names": [
+    "tp",
+    "sst",
+    "t2m",
+    "swvl1",
+    "z500",
+    "u850",
+    "v850",
+    "nino34"
+  ],
+  "causal_order": [
+    "tp",
+    "sst",
+    "v850",
+    "t2m",
+    "nino34",
+    "swvl1",
+    "u850",
+    "z500"
+  ],
+  "standardized_columns": true
+}

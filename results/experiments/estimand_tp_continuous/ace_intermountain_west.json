@@ -1,0 +1,98 @@
+{
+  "region": "intermountain_west",
+  "ace_profile": "warm_sst_tp_continuous",
+  "treatment": "sst_warm",
+  "outcome": "tp",
+  "adjustment_set": [
+    "nino34",
+    "swvl1"
+  ],
+  "identification_graph": "identification_dag (backbone \u222a structural)",
+  "ipw": {
+    "ate": 2.7173666391342636e-05,
+    "ci_low": -0.00012072987821605191,
+    "ci_high": 0.0001961674700576872,
+    "ps_mean": 0.2296275152543133,
+    "ps_std": 0.09917087204120162,
+    "overlap": {
+      "ess_ht": 162.51617021394839,
+      "ess_over_n": 0.6019117415331422,
+      "ps_mean": 0.2296275152543133,
+      "ps_std": 0.09917087204120162,
+      "ps_min": 0.03952332971869512,
+      "ps_max": 0.567487184496655,
+      "weight_p99": 9.48452305129659
+    }
+  },
+  "dr": {
+    "ate": 4.199177678335268e-05,
+    "ci_low": -0.00010418263206495772,
+    "ci_high": 0.00020507364816210247
+  },
+  "sensitivity": {
+    "method_id": "crude_gamma_scaling_subgroup_means",
+    "is_rosenbaum_bounds": false,
+    "description": "Gamma perturbs crude group means only; not calibrated to IPW ATE.",
+    "ipw_ate": 2.7173666391342636e-05,
+    "crude_risk_difference": -0.00013549943213183544,
+    "gamma_bounds": {
+      "1.0": {
+        "crude_contrast_lower": -0.0001,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      },
+      "1.5": {
+        "crude_contrast_lower": -0.0001,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      },
+      "2.0": {
+        "crude_contrast_lower": -0.0001,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      },
+      "2.5": {
+        "crude_contrast_lower": -0.0001,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      },
+      "3.0": {
+        "crude_contrast_lower": -0.0,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      },
+      "4.0": {
+        "crude_contrast_lower": -0.0,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      },
+      "5.0": {
+        "crude_contrast_lower": -0.0,
+        "crude_contrast_upper": -0.0001,
+        "sign_change": false
+      }
+    },
+    "critical_gamma": null,
+    "interpretation": "Crude scaling bounds do not cross zero for tested \u0393"
+  },
+  "e_value": {
+    "reference": "not_applicable",
+    "note": "E-values / OR path requires binary tp_extreme outcome."
+  },
+  "inference_meta": {
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "n_boot": 2000,
+    "block_size": 12,
+    "n_rows": 270,
+    "propensity_trim": null,
+    "id_treatment_graph": "sst",
+    "id_outcome_graph": "tp"
+  }
+}

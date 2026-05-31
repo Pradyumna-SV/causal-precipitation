@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "regions_stacked": [
+    "pacific_northwest",
+    "california",
+    "intermountain_west"
+  ],
+  "reference_region_dummy_omitted": "california",
+  "treatment": "sst_warm",
+  "outcome": "tp_extreme",
+  "covariates": [
+    "z500",
+    "t2m",
+    "swvl1",
+    "nino34",
+    "reg__pacific_northwest",
+    "reg__intermountain_west"
+  ],
+  "inference_meta": {
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "n_boot": 2000,
+    "block_size": 12,
+    "n_rows": 810,
+    "cluster_bootstrap_time_col": "_time"
+  },
+  "ipw": {
+    "ate": -0.006695089485043104,
+    "ci_low": -0.0622323185260277,
+    "ci_high": 0.05422059538124429,
+    "ps_mean": 0.25196871401317844,
+    "ps_std": 0.21699767359967645,
+    "overlap": {
+      "ess_ht": 243.500548883815,
+      "ess_over_n": 0.3006179615849568,
+      "ps_mean": 0.25196871401317844,
+      "ps_std": 0.21699767359967645,
+      "ps_min": 0.01,
+      "ps_max": 0.911259978130839,
+      "weight_p99": 13.146861396675249
+    }
+  },
+  "dr": {
+    "ate": -0.015157219341178266,
+    "ci_low": -0.09323832341814044,
+    "ci_high": 0.06198934963213016
+  }
+}

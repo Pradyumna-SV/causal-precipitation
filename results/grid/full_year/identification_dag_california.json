@@ -1,0 +1,52 @@
+{
+  "region": "california",
+  "edges": [
+    {
+      "source": "nino34",
+      "target": "z500"
+    },
+    {
+      "source": "nino34",
+      "target": "sst"
+    },
+    {
+      "source": "z500",
+      "target": "tp"
+    },
+    {
+      "source": "sst",
+      "target": "tp"
+    },
+    {
+      "source": "tp",
+      "target": "tp_extreme"
+    },
+    {
+      "source": "sst",
+      "target": "t2m"
+    },
+    {
+      "source": "sst",
+      "target": "z500"
+    },
+    {
+      "source": "swvl1",
+      "target": "tp"
+    },
+    {
+      "source": "t2m",
+      "target": "z500"
+    },
+    {
+      "source": "tp",
+      "target": "u850"
+    },
+    {
+      "source": "tp",
+      "target": "v850"
+    }
+  ],
+  "n_backbone": 5,
+  "n_structural": 7,
+  "n_identification": 11
+}

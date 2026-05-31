@@ -1,0 +1,231 @@
+{
+  "consensus_edges": [
+    {
+      "source": "nino34",
+      "target": "nino34",
+      "lag": 2,
+      "mci": -0.17377063899376485,
+      "pvalue": 6.577333437404468e-05
+    },
+    {
+      "source": "sst",
+      "target": "sst",
+      "lag": 1,
+      "mci": 0.5259004201942372,
+      "pvalue": 1.3247862991607346e-38
+    },
+    {
+      "source": "sst",
+      "target": "t2m",
+      "lag": 0,
+      "mci": 0.3734967582792408,
+      "pvalue": 1.0832689034877233e-18
+    },
+    {
+      "source": "sst",
+      "target": "v850",
+      "lag": 0,
+      "mci": 0.10119088499054991,
+      "pvalue": 0.020515557384123393
+    },
+    {
+      "source": "swvl1",
+      "target": "swvl1",
+      "lag": 1,
+      "mci": 0.41562472555420527,
+      "pvalue": 2.656717881498595e-23
+    },
+    {
+      "source": "swvl1",
+      "target": "t2m",
+      "lag": 2,
+      "mci": -0.09612537161949,
+      "pvalue": 0.02808982694687037
+    },
+    {
+      "source": "swvl1",
+      "target": "tp",
+      "lag": 0,
+      "mci": 0.41094218400525245,
+      "pvalue": 1.0949713484977874e-22
+    },
+    {
+      "source": "swvl1",
+      "target": "u850",
+      "lag": 0,
+      "mci": -0.10090621972222658,
+      "pvalue": 0.021121935199234398
+    },
+    {
+      "source": "swvl1",
+      "target": "z500",
+      "lag": 0,
+      "mci": -0.08717345231692153,
+      "pvalue": 0.04651431397297817
+    },
+    {
+      "source": "t2m",
+      "target": "sst",
+      "lag": 0,
+      "mci": 0.3734967582792408,
+      "pvalue": 1.0832689034877233e-18
+    },
+    {
+      "source": "t2m",
+      "target": "v850",
+      "lag": 0,
+      "mci": 0.20389953093579283,
+      "pvalue": 2.5280641408152543e-06
+    },
+    {
+      "source": "t2m",
+      "target": "z500",
+      "lag": 0,
+      "mci": 0.5931898728767454,
+      "pvalue": 7.852678977790924e-51
+    },
+    {
+      "source": "tp",
+      "target": "swvl1",
+      "lag": 0,
+      "mci": 0.41094218400525245,
+      "pvalue": 1.0949713484977874e-22
+    },
+    {
+      "source": "tp",
+      "target": "u850",
+      "lag": 0,
+      "mci": 0.41828960335377136,
+      "pvalue": 1.441763219074496e-23
+    },
+    {
+      "source": "tp",
+      "target": "v850",
+      "lag": 0,
+      "mci": 0.5820018864952714,
+      "pvalue": 7.868525082659327e-49
+    },
+    {
+      "source": "tp",
+      "target": "z500",
+      "lag": 0,
+      "mci": -0.37889832087986486,
+      "pvalue": 2.6730260717148165e-19
+    },
+    {
+      "source": "u850",
+      "target": "sst",
+      "lag": 1,
+      "mci": -0.10978697744316462,
+      "pvalue": 0.011993667920530943
+    },
+    {
+      "source": "u850",
+      "target": "swvl1",
+      "lag": 5,
+      "mci": -0.09444604846941987,
+      "pvalue": 0.030967453249266527
+    },
+    {
+      "source": "z500",
+      "target": "t2m",
+      "lag": 1,
+      "mci": 0.13327992622739732,
+      "pvalue": 0.0022776693329102588
+    },
+    {
+      "source": "z500",
+      "target": "u850",
+      "lag": 1,
+      "mci": 0.14103583274984,
+      "pvalue": 0.0012213938801004687
+    }
+  ],
+  "pcmci_only_edges": [
+    {
+      "source": "sst",
+      "target": "u850"
+    },
+    {
+      "source": "u850",
+      "target": "tp"
+    },
+    {
+      "source": "u850",
+      "target": "u850"
+    },
+    {
+      "source": "v850",
+      "target": "sst"
+    },
+    {
+      "source": "v850",
+      "target": "t2m"
+    },
+    {
+      "source": "v850",
+      "target": "tp"
+    },
+    {
+      "source": "z500",
+      "target": "swvl1"
+    },
+    {
+      "source": "z500",
+      "target": "tp"
+    }
+  ],
+  "varlingam_only_edges": [
+    {
+      "source": "nino34",
+      "target": "t2m"
+    },
+    {
+      "source": "nino34",
+      "target": "tp"
+    },
+    {
+      "source": "nino34",
+      "target": "u850"
+    },
+    {
+      "source": "nino34",
+      "target": "z500"
+    },
+    {
+      "source": "swvl1",
+      "target": "sst"
+    },
+    {
+      "source": "swvl1",
+      "target": "v850"
+    },
+    {
+      "source": "t2m",
+      "target": "swvl1"
+    },
+    {
+      "source": "t2m",
+      "target": "tp"
+    },
+    {
+      "source": "t2m",
+      "target": "u850"
+    },
+    {
+      "source": "u850",
+      "target": "v850"
+    },
+    {
+      "source": "v850",
+      "target": "z500"
+    },
+    {
+      "source": "z500",
+      "target": "v850"
+    }
+  ],
+  "n_consensus": 20,
+  "n_pcmci_only": 8,
+  "n_varlingam_only": 12
+}

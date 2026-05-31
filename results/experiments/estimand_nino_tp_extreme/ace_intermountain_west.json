@@ -1,0 +1,104 @@
+{
+  "region": "intermountain_west",
+  "ace_profile": "nino_tp_extreme",
+  "treatment": "nino_hot",
+  "outcome": "tp_extreme",
+  "adjustment_set": [
+    "z500",
+    "t2m",
+    "swvl1"
+  ],
+  "identification_graph": "identification_dag (backbone \u222a structural)",
+  "ipw": {
+    "ate": -0.07745660058844786,
+    "ci_low": -0.14054964427867472,
+    "ci_high": -0.004208829232973477,
+    "ps_mean": 0.2925894407389484,
+    "ps_std": 0.1079841286403018,
+    "overlap": {
+      "ess_ht": 203.37560373291907,
+      "ess_over_n": 0.7532429767885892,
+      "ps_mean": 0.2925894407389484,
+      "ps_std": 0.1079841286403018,
+      "ps_min": 0.11456591798129202,
+      "ps_max": 0.6291828981698573,
+      "weight_p99": 6.047571124248336
+    }
+  },
+  "dr": {
+    "ate": -0.08611181765411262,
+    "ci_low": -0.14440240845917532,
+    "ci_high": -0.004943603116496865
+  },
+  "sensitivity": {
+    "method_id": "crude_gamma_scaling_subgroup_means",
+    "is_rosenbaum_bounds": false,
+    "description": "Gamma perturbs crude group means only; not calibrated to IPW ATE.",
+    "ipw_ate": -0.07745660058844786,
+    "crude_risk_difference": -0.03923387898469083,
+    "gamma_bounds": {
+      "1.0": {
+        "crude_contrast_lower": -0.0392,
+        "crude_contrast_upper": -0.0392,
+        "sign_change": false
+      },
+      "1.5": {
+        "crude_contrast_lower": -0.0646,
+        "crude_contrast_upper": -0.0968,
+        "sign_change": false
+      },
+      "2.0": {
+        "crude_contrast_lower": -0.0772,
+        "crude_contrast_upper": -0.1544,
+        "sign_change": false
+      },
+      "2.5": {
+        "crude_contrast_lower": -0.0848,
+        "crude_contrast_upper": -0.212,
+        "sign_change": false
+      },
+      "3.0": {
+        "crude_contrast_lower": -0.0899,
+        "crude_contrast_upper": -0.2696,
+        "sign_change": false
+      },
+      "4.0": {
+        "crude_contrast_lower": -0.0962,
+        "crude_contrast_upper": -0.3848,
+        "sign_change": false
+      },
+      "5.0": {
+        "crude_contrast_lower": -0.1,
+        "crude_contrast_upper": -0.5,
+        "sign_change": false
+      }
+    },
+    "critical_gamma": null,
+    "interpretation": "Crude scaling bounds do not cross zero for tested \u0393"
+  },
+  "e_value": {
+    "reference": "VanderWeele_Ding_2017_minimum_e_value_point_estimate",
+    "crude_risk_ratio": 0.6593785960874569,
+    "crude_e_value_min": 2.401697302726846,
+    "adjusted_odds_ratio": 0.11878394654037132,
+    "adjusted_or_ci95_low": 0.027401006745596108,
+    "adjusted_or_ci95_high": 0.5149309325276339,
+    "adjusted_or_e_value_min": 16.321490768223825
+  },
+  "inference_meta": {
+    "season_months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3
+    ],
+    "n_boot": 2000,
+    "block_size": 12,
+    "n_rows": 270,
+    "propensity_trim": null,
+    "id_treatment_graph": "nino34",
+    "id_outcome_graph": "tp_extreme"
+  }
+}
