@@ -30,12 +30,12 @@ data/**
 !data/processed/**
 
 # ── Results and figures (keep directory structure only) ───────────────────────
-results/**
-!results/
-!results/.gitkeep
+# results/**
+# !results/
+# !results/.gitkeep
+#
+# figures/**
+# !figures/
+# !figures/.gitkeep
 
-figures/**
-!figures/
-!figures/.gitkeep
-
-*.pdf
+# *.pdf
