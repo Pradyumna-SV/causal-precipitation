@@ -316,7 +316,7 @@ def _plot_forest_rows(ax: plt.Axes, rows: list[dict], title: str) -> None:
     ax.set_yticks(y)
     ax.set_yticklabels([r["label"] for r in rows])
     ax.invert_yaxis()
-    ax.set_title(title, loc="left", fontsize=10, fontweight="bold")
+    ax.set_title(title, ha='left', x=0, fontsize=10, fontweight="bold")
     ax.grid(axis="x", color="0.9", lw=0.8)
 
 
@@ -358,9 +358,14 @@ def fig7_primary_holdout_summary(cfg: dict) -> None:
     )
     _plot_forest_rows(ax1, full_rows, "A. Full-sample regional and pooled estimates")
     _plot_forest_rows(ax2, holdout_rows, "B. Temporal holdout")
+
     ax1.set_xlabel("Risk difference for P(extreme precipitation)")
     ax2.set_xlabel("Risk difference for P(extreme precipitation)")
     ax1.set_xlim(xmin - pad, xmax + pad)
+
+    title = ax1.title
+    title.set_x(-0.15)
+    title.set_ha("left")
 
     strict = bool((holdout.get("confirmation") or {}).get("strict_statistical_replication"))
     split = holdout.get("split") or {}
